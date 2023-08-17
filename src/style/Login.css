@@ -1,0 +1,57 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../image/巴丝特.jpg");
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  width: 550px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(238, 202, 202, 0.5);
+  /* background-color: white; */
+}
+
+.login {
+  text-align: center;
+  position: relative;
+}
+
+.title {
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.info {
+  margin: 5px 0;
+}
+
+.left,
+.right {
+  text-decoration: none;
+  color: blue;
+}
+
+.left:hover,
+.right:hover {
+  color: red;
+  text-decoration: underline;
+}
+
+.left {
+  position: absolute;
+  top: 120px;
+  left: 0;
+}
+
+.right {
+  position: absolute;
+  top: 120px;
+  right: 0;
+}
