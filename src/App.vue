@@ -17,7 +17,7 @@ export default {
   },
   data() {
     return {
-      loginView: true// 控制登录页与内容页转换
+      loginView: true   // 控制登录页与内容页转换
     }
   },
   components: {

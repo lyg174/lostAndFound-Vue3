@@ -2,7 +2,7 @@
     <div class="container">
         <ul>
             <li>
-                <router-link to="/list">失物招领列表</router-link>
+                <router-link to="/list/lostlist">失物招领列表</router-link>
             </li>
             <li>
                 <router-link to="/center">个人中心</router-link>
@@ -41,7 +41,7 @@
 
 <style lang="scss" scoped>
 .container {
-    width: 10vw;
+    width: 15vw;
     height: 100vh;
     background-color: rgb(7, 77, 124);
 
@@ -81,10 +81,13 @@
         }
     }
 }
+
+// .router-link-active {
+//     background-color: rgb(240, 231, 231, 0.3);
+// }
 </style>
 
 <script>
-import { ElMessageBox } from 'element-plus'
 
 export default {
     data() {

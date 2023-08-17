@@ -4,11 +4,23 @@ import personalCenter from '../views/personalCenter.vue'
 import foundPublish from '../views/foundPublish.vue'
 import lostPublish from '../views/lostPublish.vue'
 import userFeedback from '../views/userFeedback.vue'
+import lostList from '../views/lostAndfound/lostList.vue'
+import foundList from '../views/lostAndfound/foundList.vue'
 
 const routes = [
     {
         path: '/list',
-        component: lostAndFoundList
+        component: lostAndFoundList,
+        children: [
+            {
+                path: '/list/lostlist',
+                component: lostList
+            },
+            {
+                path: '/list/foundlist',
+                component: foundList
+            }
+        ]
     },
     {
         path: '/center',
@@ -28,7 +40,7 @@ const routes = [
     },
     {
         path: '/',
-        redirect: '/list'
+        redirect: '/list/lostlist'
     },
 ]
 
