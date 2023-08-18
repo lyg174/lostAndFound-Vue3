@@ -45,7 +45,7 @@ export default {
       };
       axios.post('http://localhost:3000/login', userMsg).then(res => {
         alert(res.data.message);
-        this.$emit('changeView', false)
+        this.$emit('changeView', false, this.user)
       }).catch((err) => {
         alert(err.response.data.error);
       })

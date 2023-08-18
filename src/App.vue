@@ -1,7 +1,7 @@
 <template>
   <Login v-if="loginView" @changeView="hanleView"></Login>
   <div class="app" v-else>
-    <Sidebar @changeView="hanleView"></Sidebar>
+    <Sidebar @changeView="hanleView" :usernameId="username"></Sidebar>
     <Home></Home>
   </div>
 </template>
@@ -17,7 +17,8 @@ export default {
   },
   data() {
     return {
-      loginView: true   // 控制登录页与内容页转换
+      loginView: true,   // 控制登录页与内容页转换
+      username: ''
     }
   },
   components: {
@@ -26,8 +27,9 @@ export default {
     Home
   },
   methods: {
-    hanleView(value) {
+    hanleView(value, user) {
       this.loginView = value;
+      this.username = user; //从Login组件中获取的用户名发送给Sidebar组件
     }
   },
 }

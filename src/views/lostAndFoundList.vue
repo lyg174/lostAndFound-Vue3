@@ -13,6 +13,8 @@
 <style lang="scss">
 .list {
     width: 100%;
+    display: flex; //设置弹性布局，方便lostList.vue的对应元素填充剩余部分
+    flex-direction: column;
 }
 
 .navbar {

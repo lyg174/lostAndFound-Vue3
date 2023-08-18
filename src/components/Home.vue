@@ -6,7 +6,7 @@
 
 <style scoped>
 div {
-    flex: 1;
+    flex: 1; /* 填充父元素的剩余部分 */
     height: 100vh;
 }
 </style>

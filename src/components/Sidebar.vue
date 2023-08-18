@@ -1,28 +1,37 @@
 <template>
     <div class="container">
-        <ul>
-            <li>
-                <router-link to="/list/lostlist">失物招领列表</router-link>
-            </li>
-            <li>
-                <router-link to="/center">个人中心</router-link>
-            </li>
-            <li>
-                <router-link to="/feedback">用户反馈</router-link>
-            </li>
-            <li>
-                <router-link to="/lost">失物招领</router-link>
-            </li>
-            <li>
-                <router-link to="/found">失物发布</router-link>
-            </li>
-            <li @click="dialogVisible = true">
-                退出登录
-                <el-icon>
-                    <SwitchButton class="exitImg" />
-                </el-icon>
-            </li>
-        </ul>
+
+        <!-- 使用element plus构建功能跳转框 -->
+        <el-col :span="24">
+            <el-menu default-active="0" class="el-menu-vertical-demo" background-color="#074d7c">
+                <el-menu-item index="0" @click="handleRouter('/list/lostlist')">
+                    <span>失物招领列表</span>
+                </el-menu-item>
+
+                <el-menu-item index="1" @click="handleRouter('/center')">
+                    <span>个人中心</span>
+                </el-menu-item>
+
+                <el-menu-item index="2" @click="handleRouter('/found')">
+                    <span>发布拾取失物</span>
+                </el-menu-item>
+
+                <el-menu-item index="3" @click="handleRouter('/lost')">
+                    <span>发布失物</span>
+                </el-menu-item>
+
+                <el-menu-item index="4" @click="handleRouter('/feedback')">
+                    <span>用户反馈</span>
+                </el-menu-item>
+
+                <el-menu-item @click="dialogVisible = true">
+                    <span>退出登录</span>
+                    <el-icon>
+                        <SwitchButton class="exitImg" />
+                    </el-icon>
+                </el-menu-item>
+            </el-menu>
+        </el-col>
 
         <!-- 消息弹出框 -->
         <el-dialog v-model="dialogVisible" title="Tips" width="30%" center align-center>
@@ -44,52 +53,22 @@
     width: 15vw;
     height: 100vh;
     background-color: rgb(7, 77, 124);
-
-    ul {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-
-        li {
-            height: 35px;
-            border-bottom: 1px solid black;
-            border-left: none;
-            border-right: none;
-            margin: 1px 0;
-            padding: 1px 0;
-            text-align: center;
-            line-height: 35px;
-
-            a {
-                text-decoration: none;
-                color: black;
-            }
-
-            .exitImg {
-                position: relative;
-                top: 2px;
-            }
-        }
-
-        li:hover {
-            cursor: pointer;
-        }
-
-        li:last-child {
-            margin-top: 400px;
-            border: none;
-        }
-    }
 }
 
-// .router-link-active {
-//     background-color: rgb(240, 231, 231, 0.3);
-// }
+li.el-menu-item {
+    justify-content: center; //文字居中
+    border: none;
+}
+
+li.el-menu-item:last-child {
+    margin-top: 300px;
+}
 </style>
 
 <script>
 
 export default {
+    props: ['usernameId'],
     data() {
         return {
             drawer: false,
@@ -102,6 +81,18 @@ export default {
 
             this.$emit('changeView', true)//退出登录
         },
+        handleRouter(value) {
+            if (value === '/list/lostlist') {// 该地址不用获取用户id
+                this.$router.push('/list/lostlist')
+                return ;
+            };
+            this.$router.push({
+                path: value,
+                query: {
+                    username: this.usernameId //后期可以根据id获取对应的用户信息
+                }
+            })
+        }
     },
 }
 </script>
