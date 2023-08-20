@@ -16,7 +16,7 @@ export default {
     }
   },
   components: {
-    Sidebar
+    Sidebar,
   },
   methods: {
     setLogin() {// 设置登录状态loginStatus
@@ -53,6 +53,11 @@ export default {
   padding: 0;
   margin: 0;
   list-style: none;
+}
+
+.home {
+  display: flex;
+  flex-direction: column;
 }
 
 .app {
