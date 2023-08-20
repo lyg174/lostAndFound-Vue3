@@ -2,8 +2,8 @@
     <div class="list">
         <div class="navbar">
             <ul>
-                <li><router-link to="/list/lostlist">失物列表</router-link></li>
-                <li><router-link to="/list/foundlist">招领列表</router-link></li>
+                <li @click="changeRouter('/list/lostlist')">失物列表</li>
+                <li @click="changeRouter('/list/foundlist')">招领列表</li>
             </ul>
         </div>
         <router-view></router-view>
@@ -11,8 +11,8 @@
 </template>
 
 <style lang="scss">
-.list {
-    width: 100%;
+.list { // 父元素为App.vue的app
+    flex: 1;
     display: flex; //设置弹性布局，方便lostList.vue的对应元素填充剩余部分
     flex-direction: column;
 }
@@ -49,6 +49,10 @@ a {
 
 <script>
 export default {
-
+    methods: {
+        changeRouter(url) {
+            this.$router.push(url)
+        }
+    },
 }
 </script>

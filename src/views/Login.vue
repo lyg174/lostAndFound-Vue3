@@ -5,12 +5,11 @@
         <p class="title">校园失物招领系统登录页</p>
         <el-input class="info" v-model="user" placeholder="账号:" />
         <el-input class="info" v-model="psw" type="password" placeholder="密码:" show-password />
-        <a href="#" @click="isLogin = !isLogin" class="left">注册</a>
+        <router-link to="/register" class="left">注册</router-link>
         <el-button class="btn" type="primary" round @click="handleLogin">登录</el-button>
         <a href="#" class="right">忘记密码？</a>
       </form>
 
-      <Register v-else @isRegister="hanleStatus"></Register>
     </div>
   </div>
 </template>
@@ -19,18 +18,14 @@
   
 <script>
 import axios from 'axios'
-import Register from './Register.vue';
 
 export default {
-  components: {
-    Register
-  },
+
   data() {
     return {
       user: '',
       psw: '',
       isLogin: true,// 控制跳转注册界面
-      loginStatus: false //登录状态
     }
   },
   methods: {
@@ -43,15 +38,19 @@ export default {
         username: this.user,
         password: this.psw
       };
+
+      const that = this;
+
       axios.post('http://localhost:3000/login', userMsg).then(res => {
         alert(res.data.message);
-        this.$emit('changeView', false, this.user)
+        // this.$emit('changeView', true, this.user)
+        sessionStorage.setItem('loginStatus', 'true');
+        sessionStorage.setItem('username', userMsg.username); //保存用户名到本地(临时)
+        this.$router.push('/list/lostlist')
+        this.$emit('loggedIn'); // 触发@loggedIn改变Sidebar显示状态，并传入用户的用户名
       }).catch((err) => {
         alert(err.response.data.error);
       })
-    },
-    hanleStatus(value) {
-      this.isLogin = value
     }
   },
 }

@@ -1,35 +1,48 @@
 <template>
-  <Login v-if="loginView" @changeView="hanleView"></Login>
-  <div class="app" v-else>
-    <Sidebar @changeView="hanleView" :usernameId="username"></Sidebar>
-    <Home></Home>
+  <div class="app">
+    <Sidebar v-if="loginView" @loggedIn="handleLoginView" :usernameId="username"></Sidebar>
+    <router-view @loggedIn="handleLoginView"></router-view>
   </div>
 </template>
 
 <script>
-import Login from './views/Login.vue'
 import Sidebar from './components/Sidebar.vue';
-import Home from './components/Home.vue';
 
 export default {
-  provide: {
-    app: this
-  },
   data() {
     return {
-      loginView: true,   // 控制登录页与内容页转换
+      loginView: false,   // 控制Sidebar组件的显示,默认为false
       username: ''
     }
   },
   components: {
-    Login,
-    Sidebar,
-    Home
+    Sidebar
   },
   methods: {
-    hanleView(value, user) {
-      this.loginView = value;
-      this.username = user; //从Login组件中获取的用户名发送给Sidebar组件
+    setLogin() {// 设置登录状态loginStatus
+      let loginStatus = sessionStorage.getItem('loginStatus')
+      let user = sessionStorage.getItem('username')
+      if (loginStatus === 'true' && user) {// 根据登录状态改变Sidebar组件显示情况
+        this.loginView = true;
+        this.username = user;
+      }
+    },
+    toList() {// 登录成功后在当前界面浏览器刷新，重定向到'/list/lostlist'
+      let loginStatus = sessionStorage.getItem('loginStatus')
+      if (loginStatus === 'true' && this.loginView === true && this.username !== '') this.$router.push('/list/lostlist')
+
+    },
+    handleLoginView() {
+      // 控制Sidebar组件的显示
+      this.loginView = !this.loginView;
+      this.username = sessionStorage.getItem('username') // 第一次登录成功后立即传值
+    }
+  },
+  created() {// 每次创建时执行下列方法，包括浏览器刷新
+    let loginStatus = sessionStorage.getItem('loginStatus');
+    if (loginStatus !== 'false') { // 只有登录成功才能执行
+      this.setLogin()
+      this.toList()
     }
   },
 }

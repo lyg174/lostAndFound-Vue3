@@ -12,11 +12,13 @@
 
             <!-- 以下数据通过请求后端获取 -->
             <li v-for="item of dataList" :key="item">
-                <div class="lostInfo">{{item.a}}</div>
-                <div class="lostInfo">{{item.b}}</div>
-                <div class="lostInfo">{{item.c}}</div>
-                <div class="lostInfo">{{item.d}}</div>
-                <div class="lostInfo">{{item.e}}</div>
+                <div class="lostInfo">
+                    <img :src="hanleImg(item.lostImageUrl)">
+                </div>
+                <div class="lostInfo">{{ item.lostDescribe }}</div>
+                <div class="lostInfo">{{ item.lostTime }}</div>
+                <div class="lostInfo">{{ item.lostPublishTime }}</div>
+                <div class="lostInfo">222</div>
                 <div class="lostInfo">
                     <el-button>招领</el-button>
                 </div>
@@ -41,6 +43,10 @@
                 text-align: center;
                 line-height: 20px;
                 font-weight: 550;
+
+                img {
+                    height: 100%;
+                }
             }
 
             div:not(:last-child) {
@@ -53,21 +59,28 @@
             }
         }
     }
-}</style>
+}
+</style>
 
 <script>
+import axios from 'axios'
+
 export default {
     data() {
         return {
-            dataList: [
-                {
-                    a: 1,
-                    b: 2,
-                    c: 3,
-                    d: 4,
-                    e: 5
-                }
-            ]
+            dataList: []
+        }
+    },
+    mounted() {
+        axios.get('http://localhost:3000/lostlist').then(res => {
+            this.dataList = res.data.data;
+            console.log(res.data.data);
+        })
+    },
+    methods: {
+        hanleImg(url) {// 设置代理处理图片
+            const proxyUrl = `http://localhost:3000/image-proxy?url=${encodeURIComponent(url)}`;
+            return proxyUrl;
         }
     },
 }

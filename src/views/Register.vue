@@ -1,17 +1,41 @@
 <template>
-    <form class="register">
-        <p class="title">注册界面</p>
-        <el-button class="btnBack" type='primary' round @click="handleBack"><el-icon>
-                <ArrowLeft />
-            </el-icon></el-button>
-        <el-input class="info" v-model="user" placeholder="请输入账号:" />
-        <el-input class="info" v-model="psw1" type="password" placeholder="请输入密码:" show-password />
-        <el-input class="info" v-model="psw2" type="password" placeholder="确认密码:" show-password />
-        <el-button class="btn" type="primary" round @click="handleRegister">注册</el-button>
-    </form>
+    <div class="container">
+        <div class="content">
+            <form class="register">
+                <p class="title">注册界面</p>
+                <el-button class="btnBack" type='primary' round @click="handleBack"><el-icon>
+                        <ArrowLeft />
+                    </el-icon></el-button>
+                <el-input class="info" v-model="user" placeholder="请输入账号:" />
+                <el-input class="info" v-model="psw1" type="password" placeholder="请输入密码:" show-password />
+                <el-input class="info" v-model="psw2" type="password" placeholder="确认密码:" show-password />
+                <el-button class="btn" type="primary" round @click="handleRegister">注册</el-button>
+            </form>
+        </div>
+    </div>
 </template>
 
 <style scoped>
+.container {
+    width: 100vw;
+    height: 100vh;
+    background-image: url("../image/巴丝特.jpg");
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    width: 550px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(238, 202, 202, 0.5);
+    /* background-color: white; */
+}
+
 .register {
     text-align: center;
     position: relative;
@@ -70,7 +94,7 @@ export default {
             })
         },
         handleBack() {
-            this.$emit('isRegister', true)
+            this.$router.back()
         }
     },
 }

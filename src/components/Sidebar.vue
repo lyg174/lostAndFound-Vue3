@@ -2,7 +2,7 @@
     <div class="container">
 
         <!-- 使用element plus构建功能跳转框 -->
-        <el-col :span="24">
+        <el-col :span="24"> <!-- width: 100% -->
             <el-menu default-active="0" class="el-menu-vertical-demo" background-color="#074d7c">
                 <el-menu-item index="0" @click="handleRouter('/list/lostlist')">
                     <span>失物招领列表</span>
@@ -39,7 +39,7 @@
             <template #footer>
                 <span class="dialog-footer">
                     <el-button @click="dialogVisible = false">取消</el-button>
-                    <el-button type="primary" @click="exitLogin">
+                    <el-button type="primary" @click="exitLogin" dialogVisible>
                         确认
                     </el-button>
                 </span>
@@ -77,9 +77,12 @@ export default {
         };
     },
     methods: {
-        exitLogin() {
-
-            this.$emit('changeView', true)//退出登录
+        exitLogin() {// 退出登录,并触发父组件App的@loggedIn实现隐藏Sidebar组件
+            sessionStorage.setItem('loginStatus', 'false')
+            sessionStorage.setItem('username', '')
+            this.$emit('loggedIn')
+            this.$router.push('/login') // 退出后跳转到登录界面
+            this.dialogVisible = false
         },
         handleRouter(value) {
             if (value === '/list/lostlist') {// 该地址不用获取用户id
