@@ -19,8 +19,8 @@
 .container {
     width: 100vw;
     height: 100vh;
-    background-image: url("../image/巴丝特.jpg");
-    background-size: cover;
+    /* background-image: url("../image/巴丝特.jpg");
+    background-size: cover; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,7 +32,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(238, 202, 202, 0.5);
+    background: linear-gradient(45deg, #5c32bf 0%, #196073 50%, #26dc69 100%);
     /* background-color: white; */
 }
 

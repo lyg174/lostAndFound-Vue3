@@ -12,12 +12,12 @@
 
             <li v-for="item of dataList" :key="item" class="scrollbar-demo-item">
                 <div class="lostInfo">
-                    <img :src="hanleImg(item.lostImageUrl)">
+                    <img :src="hanleImg(item.foundImageUrl)">
                 </div>
-                <div class="lostInfo">{{ item.lostDescribe }}</div>
-                <div class="lostInfo">{{ item.lostTime }}</div>
-                <div class="lostInfo">{{ item.lostPublishTime }}</div>
-                <div class="lostInfo">222</div>
+                <div class="lostInfo">{{ item.foundDescribe }}</div>
+                <div class="lostInfo">{{ item.foundTime }}</div>
+                <div class="lostInfo">{{ item.foundPublishTime }}</div>
+                <div class="lostInfo">{{ item.foundersContact }}</div>
                 <div class="lostInfo">
                     <el-button>认领</el-button>
                 </div>
@@ -101,7 +101,7 @@ export default {
         }
     },
     mounted() {
-        axios.get('http://localhost:3000/lostlist').then(res => {
+        axios.get('http://localhost:3000/foundlist').then(res => {
             this.dataList = res.data.data;
             console.log(res.data.data);
         })

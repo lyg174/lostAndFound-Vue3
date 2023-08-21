@@ -74,7 +74,7 @@ router.beforeEach((to, from, next) => {
         sessionStorage.setItem('loginStatus', 'false');
         sessionStorage.setItem('username', '')
         next({ name: 'Login' });
-    }
+    } else if (to.name !== 'Login' && loginStatus === 'false') next({ name: 'Login' });
     else next();
 })
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app" style="z-index: 10;">
     <Sidebar v-if="loginView" @loggedIn="handleLoginView" :usernameId="username"></Sidebar>
     <router-view @loggedIn="handleLoginView"></router-view>
   </div>
@@ -55,6 +55,26 @@ export default {
   list-style: none;
 }
 
+
+#app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  /* background-image: url("./image/巴丝特.jpg");
+  background-size: cover; */
+  background: linear-gradient(45deg, #db0e97 0%, #0a67bf 50%, #0ae6a4 100%);
+}
+
+/* body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+} */
+
 .home {
   display: flex;
   flex-direction: column;
@@ -62,5 +82,7 @@ export default {
 
 .app {
   display: flex;
+  width: 70%;
+  /* height: 0; */
 }
 </style>

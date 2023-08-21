@@ -50,14 +50,26 @@
 
 <style lang="scss" scoped>
 .container {
-    width: 15vw;
+    width: 15%;
     height: 100vh;
     background-color: rgb(7, 77, 124);
 }
 
+.el-menu {
+    border: none;
+}
+
 li.el-menu-item {
     justify-content: center; //文字居中
-    border: none;
+
+    span {
+        overflow: hidden;
+        /* 隐藏溢出内容 */
+        white-space: nowrap;
+        /* 不换行，防止文本溢出 */
+        text-overflow: ellipsis;
+        /* 当文本溢出时显示省略号 */
+    }
 }
 
 li.el-menu-item:last-child {
@@ -87,7 +99,7 @@ export default {
         handleRouter(value) {
             if (value === '/list/lostlist') {// 该地址不用获取用户id
                 this.$router.push('/list/lostlist')
-                return ;
+                return;
             };
             this.$router.push({
                 path: value,

@@ -39,8 +39,6 @@ export default {
         password: this.psw
       };
 
-      const that = this;
-
       axios.post('http://localhost:3000/login', userMsg).then(res => {
         alert(res.data.message);
         // this.$emit('changeView', true, this.user)

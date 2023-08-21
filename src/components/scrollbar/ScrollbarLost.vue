@@ -17,13 +17,15 @@
                 <div class="lostInfo">{{ item.lostDescribe }}</div>
                 <div class="lostInfo">{{ item.lostTime }}</div>
                 <div class="lostInfo">{{ item.lostPublishTime }}</div>
-                <div class="lostInfo">222</div>
+                <div class="lostInfo">{{ item.losersInfo }}</div>
                 <div class="lostInfo">
                     <el-button>招领</el-button>
                 </div>
             </li>
         </el-scrollbar>
+        
     </div>
+    <el-backtop :right="100" :bottom="100" />
 </template>
 
 <style lang="scss" scoped>
@@ -31,12 +33,14 @@
     flex: 1; //填充剩余部分
 }
 
-.scroll { // 滚动组件
+.scroll {
+    // 滚动组件
     max-height: 676.4px;
     position: relative;
 }
 
-.title {// 信息标题
+.title {
+    // 信息标题
     display: flex;
     justify-content: center;
     align-items: center;
@@ -47,18 +51,26 @@
     padding-bottom: 0;
     position: sticky; //设置粘性定位
     top: 0;
-    
+
     div {
         flex: 1;
         text-align: center;
         border-bottom: 1px solid black;
+        overflow: hidden;
+        /* 隐藏溢出内容 */
+        white-space: nowrap;
+        /* 不换行，防止文本溢出 */
+        text-overflow: ellipsis;
+        /* 当文本溢出时显示省略号 */
     }
+
     div:not(:last-child) {
         border-right: 1px solid black;
     }
 }
 
-.scrollbar-demo-item { // 后端获取数据并展示的栏位
+.scrollbar-demo-item {
+    // 后端获取数据并展示的栏位
     display: flex;
     align-items: center;
     justify-content: center;
