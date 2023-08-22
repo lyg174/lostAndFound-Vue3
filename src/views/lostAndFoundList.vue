@@ -7,11 +7,11 @@
                 <el-menu-item index="1" @click="changeRouter('/list/lostlist')">失物列表</el-menu-item>
                 <el-menu-item index="2" @click="changeRouter('/list/foundlist')">招领列表</el-menu-item>
 
-                <el-menu-item>
+                <el-menu-item index="3">
                     <el-avatar>
-                        <img src="../image/巴丝特.jpg">
+                        <img :src="hanleImg()">
                     </el-avatar>
-                    <span>唯一</span>
+                    <span>{{ nickname }}</span>
                 </el-menu-item>
 
             </el-menu>
@@ -68,13 +68,25 @@ a {
 
 <script>
 export default {
+    computed: {
+        nickname() {
+            return sessionStorage.getItem('nickname')
+        }
+    },
     methods: {
         changeRouter(url) {
             this.$router.push(url)
         },
         errorHandler() {
             return true
+        },
+
+        hanleImg() {// 设置代理处理图片
+            const url = sessionStorage.getItem('avatar').replace('node\\', '');
+            const proxyUrl = `http://localhost:3000/image-proxy?url=${encodeURIComponent(url)}`;
+            sessionStorage.setItem('avatar_copy', proxyUrl)
+            return proxyUrl;
         }
-    },
+    }
 }
 </script>

@@ -40,10 +40,14 @@ export default {
       };
 
       axios.post('http://localhost:3000/login', userMsg).then(res => {
-        alert(res.data.message);
+        alert('登录成功');
+        console.log(res.data);
+        const datalist = res.data.data[0];
         // this.$emit('changeView', true, this.user)
         sessionStorage.setItem('loginStatus', 'true');
         sessionStorage.setItem('username', userMsg.username); //保存用户名到本地(临时)
+        sessionStorage.setItem('nickname', datalist.nickname); // 昵称
+        sessionStorage.setItem('avatar', datalist.avatar);// 头像地址
         this.$router.push('/list/lostlist')
         this.$emit('loggedIn'); // 触发@loggedIn改变Sidebar显示状态，并传入用户的用户名
       }).catch((err) => {

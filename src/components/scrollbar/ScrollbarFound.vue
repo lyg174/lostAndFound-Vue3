@@ -52,6 +52,12 @@
         flex: 1;
         text-align: center;
         border-bottom: 1px solid black;
+        overflow: hidden;
+        /* 隐藏溢出内容 */
+        white-space: nowrap;
+        /* 不换行，防止文本溢出 */
+        text-overflow: ellipsis;
+        /* 当文本溢出时显示省略号 */
     }
     div:not(:last-child) {
         border-right: 1px solid black;

@@ -5,22 +5,27 @@
         <el-col :span="24"> <!-- width: 100% -->
             <el-menu default-active="0" class="el-menu-vertical-demo" background-color="#074d7c">
                 <el-menu-item index="0" @click="handleRouter('/list/lostlist')">
+                    <el-icon><House /></el-icon>
                     <span>失物招领列表</span>
                 </el-menu-item>
 
                 <el-menu-item index="1" @click="handleRouter('/center')">
+                    <el-icon><User /></el-icon>
                     <span>个人中心</span>
                 </el-menu-item>
 
                 <el-menu-item index="2" @click="handleRouter('/found')">
+                    <el-icon><Promotion /></el-icon>
                     <span>发布拾取失物</span>
                 </el-menu-item>
 
                 <el-menu-item index="3" @click="handleRouter('/lost')">
+                    <el-icon><Promotion /></el-icon>
                     <span>发布失物</span>
                 </el-menu-item>
 
                 <el-menu-item index="4" @click="handleRouter('/feedback')">
+                    <el-icon><Message /></el-icon>
                     <span>用户反馈</span>
                 </el-menu-item>
 
