@@ -36,6 +36,7 @@
             </div>
         </div>
 
+        <!-- 对话框 -->
         <el-dialog v-model="centerDialogVisible" title="资料修改" width="30%" align-center :center="true">
 
             <!-- element plus表单，用于提交用户修改数据 -->
