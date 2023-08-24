@@ -1,5 +1,5 @@
 <template>
-    <el-upload class="avatar-uploader" action="http://localhost:3000/usersAvatar" :show-file-list="false"
+    <el-upload :data="userData" class="avatar-uploader" action="http://localhost:3000/usersAvatar" :show-file-list="false"
         :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
         <img v-if="imageUrl" :src="imageUrl" class="avatar">
         <el-icon v-else class="avatar-uploader-icon">
@@ -16,13 +16,17 @@ export default {
     data() {
         return {
             imageUrl: '',
+            userData: {
+                username: ''
+            }
         }
     },
 
     methods: {
-        handleAvatarSuccess(response, uploadFile) {
-            alert('上传成功！');
-            this.$emit('hanleSubmit');
+        handleAvatarSuccess(res, uploadFile) {
+            alert('上传成功!');
+            sessionStorage.setItem('avatar', res.path)// 修改头像文件路径
+            this.$emit('hanleSubmit');// 触发父组件事件
             this.imageUrl = URL.createObjectURL(uploadFile.raw)
         },
 
@@ -37,7 +41,11 @@ export default {
             }
             return true
         }
-    }
+    },
+    mounted() {
+        this.userData.username = sessionStorage.getItem('username');// 获取用户名信息，为上传至后端修改对应用户头像做标识
+        console.log(this.userData);
+    },
 }
 </script>
   
