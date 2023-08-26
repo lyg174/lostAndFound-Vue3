@@ -22,17 +22,24 @@
                     <el-button>认领</el-button>
                 </div>
             </li>
+
+            <el-empty v-if="!dataList.length" description="description" />
+
         </el-scrollbar>
+
+
+
     </div>
 </template>
 
 <style lang="scss" scoped>
 .lostList {
     flex: 1; //填充剩余部分
+    background-color: #ecf5ff;
 }
 
 .scroll { // 滚动组件
-    max-height: 676.4px;
+    max-height: 680.4px;
     position: relative;
 }
 

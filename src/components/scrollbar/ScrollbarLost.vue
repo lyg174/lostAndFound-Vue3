@@ -17,25 +17,30 @@
                 <div class="lostInfo">{{ item.lostDescribe }}</div>
                 <div class="lostInfo">{{ item.lostTime }}</div>
                 <div class="lostInfo">{{ item.lostPublishTime }}</div>
-                <div class="lostInfo">{{ item.losersInfo }}</div>
+                <div class="lostInfo">{{ item.losersContact }}</div>
                 <div class="lostInfo">
                     <el-button>招领</el-button>
                 </div>
             </li>
+            
+            <el-empty v-if="!dataList.length" description="description" />
+
         </el-scrollbar>
+
+
         
     </div>
-    <el-backtop :right="100" :bottom="100" />
 </template>
 
 <style lang="scss" scoped>
 .lostList {
     flex: 1; //填充剩余部分
+    background-color: #ecf5ff;
 }
 
 .scroll {
     // 滚动组件
-    max-height: 676.4px;
+    max-height: 680.4px;
     position: relative;
 }
 

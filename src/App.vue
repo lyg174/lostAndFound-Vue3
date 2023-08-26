@@ -1,5 +1,5 @@
 <template>
-  <div class="app" style="z-index: 10;">
+  <div class="app">
     <Sidebar v-if="loginView" @loggedIn="handleLoginView" :usernameId="username"></Sidebar>
     <router-view @loggedIn="handleLoginView"></router-view>
   </div>
@@ -75,10 +75,10 @@ export default {
   height: 100%;
 } */
 
-.home {
+/* .home {
   display: flex;
   flex-direction: column;
-}
+} */
 
 .app {
   display: flex;
