@@ -47,7 +47,9 @@ export default {
         sessionStorage.setItem('loginStatus', 'true');
         sessionStorage.setItem('username', userMsg.username); //保存用户名到本地(临时)
         sessionStorage.setItem('nickname', datalist.nickname); // 昵称
-        sessionStorage.setItem('avatar', datalist.avatar);// 头像地址
+        if (!datalist.avatar) {
+          sessionStorage.setItem('avatar', 'usersAvatar/0fc7d20532fdaf769a25683617711png.png');//如果头像为空，则设置为默认头像
+        } else sessionStorage.setItem('avatar', datalist.avatar);// 头像地址
         this.$router.push('/list/lostlist')
         this.$emit('loggedIn'); // 触发@loggedIn改变Sidebar显示状态，并传入用户的用户名
       }).catch((err) => {

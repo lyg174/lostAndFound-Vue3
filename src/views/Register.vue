@@ -85,7 +85,7 @@ export default {
                 password: this.psw1
             };
             axios.post('http://localhost:3000/register', registerMsg).then(res => {
-                console.log(res.data.message);
+                alert(res.data.message);
                 setTimeout(() => {
                     this.$emit('isRegister', true)
                 }, 1500);

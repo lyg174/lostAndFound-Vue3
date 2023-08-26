@@ -13,7 +13,7 @@
                         confirm-button-text="更换" cancel-button-text="取消" icon-color="#626AEF">
                         <template #reference>
                             <el-button class="avatar_btn">
-                                <el-avatar>
+                                <el-avatar @error="errorHandler">
                                     <img :src="hanleImg()">
                                 </el-avatar>
                             </el-button>

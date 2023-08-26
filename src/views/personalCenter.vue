@@ -6,22 +6,22 @@
             </el-avatar>
 
             <div class="info">
-                <ul v-for="item of datalist">
+                <ul>
                     <li>
                         <span>昵称:</span>
-                        <div>{{ item.nickname }}</div>
+                        <div>{{ datalist[0].nickname }}</div>
                     </li>
                     <li>
                         <span>真实姓名:</span>
-                        <div>{{ item.realName }}</div>
+                        <div>{{ datalist[0].realName }}</div>
                     </li>
                     <li>
                         <span>性别:</span>
-                        <div>{{ item.gender }}</div>
+                        <div>{{ datalist[0].gender }}</div>
                     </li>
                     <li>
                         <span>电话号码:</span>
-                        <div>{{ item.phoneNumber }}</div>
+                        <div>{{ datalist[0].phoneNumber }}</div>
                     </li>
 
                     <li>
@@ -142,7 +142,14 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            datalist: [],
+            datalist: [
+                {
+                    nickname: '',
+                    realName: '',
+                    phoneNumber: '',
+                    gender: ''
+                }
+            ],
             centerDialogVisible: false,
             nickname: '',
             realName: '',
@@ -199,7 +206,7 @@ export default {
         let id = sessionStorage.getItem('username')
 
         axios.post('http://localhost:3000/usersInfo', { username: id }).then(res => { //获取个人信息
-            this.datalist = res.data.data
+            if (res.data.data.length) this.datalist = res.data.data;
             console.log(this.datalist);
         }).catch((err) => {
             alert(err.response.data.error);
