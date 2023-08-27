@@ -7,7 +7,16 @@
                 <el-menu-item index="1" @click="changeRouter('/list/lostlist')">失物列表</el-menu-item>
                 <el-menu-item index="2" @click="changeRouter('/list/foundlist')">招领列表</el-menu-item>
 
-                <el-menu-item index="3" class="avatar">
+                <el-menu-item>
+                    <el-input index="3" class="search" v-model="text" placeholder="Please input" maxlength="10"
+                        show-word-limit clearable>
+                        <template #append>
+                            <el-button type="primary" @click.stop="handleSearch">搜索</el-button>
+                        </template>
+                    </el-input>
+                </el-menu-item>
+
+                <el-menu-item index="4" class="avatar">
                     <!-- 气泡确认框 -->
                     <el-popconfirm width="150px" @confirm="centerDialogVisible = true" title="更改头像？"
                         confirm-button-text="更换" cancel-button-text="取消" icon-color="#626AEF">
@@ -32,7 +41,7 @@
 
         </el-dialog>
 
-        <router-view></router-view>
+        <router-view @handleArray="copyArray" :dataListCopy="this.dataListCopy"></router-view>
     </div>
 </template>
 
@@ -45,7 +54,8 @@
 }
 
 
-.avatar.is-active {
+.avatar.is-active,
+.search.is-active {
     border-bottom: none;
 
     span {
@@ -102,11 +112,14 @@ import uploadAvatar from '../components/uploadAvatar.vue'
 
 export default {
     components: {
-        uploadAvatar
+        uploadAvatar,
     },
     data() {
         return {
             centerDialogVisible: false,
+            text: '',
+            dataList: [],// 用于接受子组件数据
+            dataListCopy: []// 提供搜索后的数据
         }
     },
     computed: {
@@ -126,6 +139,22 @@ export default {
                 this.centerDialogVisible = false;
             }, 1000);
         },
+        handleSearch() {// 搜索方法
+            console.log(this.text);
+            if (this.text !== '') {
+                this.dataListCopy = this.dataList.filter(item => {
+                    if (item.lostDescribe) return item.lostDescribe.includes(this.text);// 处理失物数据
+                    if (item.foundDescribe) return item.foundDescribe.includes(this.text);// 处理招领物数据
+                });
+            } else {// 内容为空时
+                this.dataListCopy = this.dataList;
+                console.log(this.dataListCopy);
+            }
+        },
+        copyArray(list) {// 接受子组件传来的数据
+            this.dataList = list;
+            this.dataListCopy = this.dataList.slice();// 复制
+        },
 
         hanleImg() {// 设置代理处理图片
             const url = sessionStorage.getItem('avatar').replace('node\\', '');
@@ -133,6 +162,6 @@ export default {
             sessionStorage.setItem('avatar_copy', proxyUrl)
             return proxyUrl;
         }
-    }
+    },
 }
 </script>

@@ -3,14 +3,14 @@
         <el-scrollbar class="scroll">
             <li class="title">
                 <div>失物图片</div>
-                <div>失物描述</div>
+                <div>失物名称</div>
                 <div>丢失时间</div>
                 <div>失物发布时间</div>
                 <div>失主联系方式</div>
-                <div>招领</div>
+                <div>详情</div>
             </li>
 
-            <li v-for="item of dataList" :key="item" class="scrollbar-demo-item">
+            <li v-for="item of dataListCopy" :key="item" class="scrollbar-demo-item">
                 <div class="lostInfo">
                     <img :src="hanleImg(item.lostImageUrl)">
                 </div>
@@ -19,16 +19,16 @@
                 <div class="lostInfo">{{ item.lostPublishTime }}</div>
                 <div class="lostInfo">{{ item.losersContact }}</div>
                 <div class="lostInfo">
-                    <el-button>招领</el-button>
+                    <el-button>查看详情</el-button>
                 </div>
             </li>
-            
+
             <el-empty v-if="!dataList.length" description="description" />
 
         </el-scrollbar>
 
 
-        
+
     </div>
 </template>
 
@@ -112,17 +112,20 @@
 import axios from 'axios'
 
 export default {
+    props: ['dataListCopy'],
     data() {
         return {
-            dataList: []
+            dataList: [],
         }
     },
     mounted() {
         axios.get('http://localhost:3000/lostlist').then(res => {
             this.dataList = res.data.data;
+            this.$emit('handleArray', this.dataList)// 传递给父组件，以便进行搜索操作
             console.log(res.data.data);
         })
     },
+    
     methods: {
         hanleImg(url) {// 设置代理处理图片
             const proxyUrl = `http://localhost:3000/image-proxy?url=${encodeURIComponent(url)}`;

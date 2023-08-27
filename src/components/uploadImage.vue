@@ -1,5 +1,5 @@
 <template>
-  <el-upload :data="userData" ref="uploadRef" action="http://localhost:3000/userPublishFound" :auto-upload="false"
+  <el-upload :data="userData" ref="uploadRef" :action="api" :auto-upload="false"
     :on-success="handleImageSuccess">
 
     <template #trigger>
@@ -16,7 +16,7 @@
 
 <script>
 export default {
-
+  inject: ['api'],// 接受父组件传来的api接口
   data() {
     return {
       uploadRef: 'null',

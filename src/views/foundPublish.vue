@@ -3,11 +3,11 @@
         <el-scrollbar class="scroll">
             <li class="title">
                 <div>招领物图片</div>
-                <div>招领物描述</div>
+                <div>招领物名称</div>
                 <div>拾取时间</div>
                 <div>招领物发布时间</div>
                 <div>我的联系方式</div>
-                <div>修改/删除</div>
+                <div>删除</div>
             </li>
 
 
@@ -174,6 +174,11 @@ import axios from 'axios';
 import uploadImage from '../components/uploadImage.vue'
 
 export default {
+    provide() {
+        return {
+            api: 'http://localhost:3000/userPublishFound'// 提供给子组件的api接口
+        }
+    },
     components: {
         uploadImage
     },

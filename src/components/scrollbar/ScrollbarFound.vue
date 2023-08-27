@@ -3,14 +3,14 @@
         <el-scrollbar class="scroll">
             <li class="title">
                 <div>招领物图片</div>
-                <div>招领物描述</div>
+                <div>招领物名称</div>
                 <div>拾取时间</div>
                 <div>招领物发布时间</div>
                 <div>拾取人联系方式</div>
-                <div>认领</div>
+                <div>详情</div>
             </li>
 
-            <li v-for="item of dataList" :key="item" class="scrollbar-demo-item">
+            <li v-for="item of dataListCopy" :key="item" class="scrollbar-demo-item">
                 <div class="lostInfo">
                     <img :src="hanleImg(item.foundImageUrl)">
                 </div>
@@ -19,7 +19,7 @@
                 <div class="lostInfo">{{ item.foundPublishTime }}</div>
                 <div class="lostInfo">{{ item.foundersContact }}</div>
                 <div class="lostInfo">
-                    <el-button>认领</el-button>
+                    <el-button>查看详情</el-button>
                 </div>
             </li>
 
@@ -108,6 +108,7 @@
 import axios from 'axios'
 
 export default {
+    props: ['dataListCopy'],
     data() {
         return {
             dataList: []
@@ -116,6 +117,7 @@ export default {
     mounted() {
         axios.get('http://localhost:3000/foundlist').then(res => {
             this.dataList = res.data.data;
+            this.$emit('handleArray', this.dataList)// 传递给父组件，以便进行搜索操作
             console.log(res.data.data);
         })
     },
