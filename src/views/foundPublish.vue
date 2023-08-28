@@ -87,7 +87,7 @@
 <style lang="scss" scoped>
 .found {
     width: 100%;
-    background-color: white;
+    background-color: skyblue;
     // background-image: url('../image/bg.jpg');
     // background-size: cover;
 }

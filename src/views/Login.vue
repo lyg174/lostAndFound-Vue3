@@ -50,8 +50,17 @@ export default {
         if (!datalist.avatar) {
           sessionStorage.setItem('avatar', 'usersAvatar/0fc7d20532fdaf769a25683617711png.png');//如果头像为空，则设置为默认头像
         } else sessionStorage.setItem('avatar', datalist.avatar);// 头像地址
-        this.$router.push('/list/lostlist')
-        this.$emit('loggedIn'); // 触发@loggedIn改变Sidebar显示状态，并传入用户的用户名
+
+        if (userMsg.username == 1741174892) {// 管理员账号
+          this.$router.push('/publishinfo/lostinfo');
+          this.$emit('adminLoggedIn'); // 触发@adminLoggedIn改变adminSidebar显示状态
+          console.log(555);
+        }
+        else {
+          this.$router.push('/list/lostlist');// 普通用户账号
+          this.$emit('loggedIn'); // 触发@loggedIn改变Sidebar显示状态
+        };
+
       }).catch((err) => {
         alert(err.response.data.error);
       })

@@ -8,9 +8,35 @@ import lostList from '../views/lostAndfound/lostList.vue'
 import foundList from '../views/lostAndfound/foundList.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
-// import Home from '../components/Home.vue'
+import publishInfo from '../views/Admin/publishInfo.vue'
+import lostInfo from '../views/Admin/lostAndfoundInfo/lostInfo.vue'
+import foundInfo from '../views/Admin/lostAndfoundInfo/foundInfo.vue'
+import usersManager from '../views/Admin/usersManager.vue'
+import usersFeedback from '../views/Admin/usersFeedback.vue'
 
 const routes = [
+    {
+        path: '/publishinfo',
+        component: publishInfo,
+        children: [
+            {
+                path: '/publishinfo/lostinfo',
+                component: lostInfo
+            },
+            {
+                path: '/publishinfo/foundinfo',
+                component: foundInfo
+            }
+        ]
+    },
+    {
+        path: '/usersmanager',
+        component: usersManager
+    },
+    {
+        path: '/usersfeedback',
+        component: usersFeedback
+    },
     {
         name: 'Login',
         path: '/login',
@@ -69,7 +95,7 @@ router.beforeEach((to, from, next) => {
         next()
         return
     }
-    
+
     if (to.name === 'Login' && loginStatus == undefined) { //数据初始化(每次进入系统)
         sessionStorage.setItem('loginStatus', 'false');
         sessionStorage.setItem('username', '')

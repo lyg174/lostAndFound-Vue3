@@ -4,8 +4,8 @@
 
             <el-menu default-active="1" class="el-menu-demo" mode="horizontal" background-color="#545c64" text-color="#fff"
                 active-text-color="#ffd04b" :ellipsis="false">
-                <el-menu-item index="1" @click="changeRouter('/list/lostlist')">失物列表</el-menu-item>
-                <el-menu-item index="2" @click="changeRouter('/list/foundlist')">招领列表</el-menu-item>
+                <el-menu-item index="1" @click="changeRouter('/publishinfo/lostinfo')">失物列表</el-menu-item>
+                <el-menu-item index="2" @click="changeRouter('/publishinfo/foundinfo')">招领列表</el-menu-item>
 
                 <el-menu-item>
                     <el-input index="3" class="search" v-model="text" placeholder="请输入物品名称" maxlength="10"
@@ -108,7 +108,7 @@ a {
 </style>
 
 <script>
-import uploadAvatar from '../components/uploadAvatar.vue'
+import uploadAvatar from '../../components/uploadAvatar.vue'
 
 export default {
     components: {
