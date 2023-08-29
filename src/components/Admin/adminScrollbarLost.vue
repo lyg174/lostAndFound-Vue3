@@ -10,21 +10,26 @@
                 <div>详情</div>
             </li>
 
-            <li v-for="item of dataListCopy" :key="item" class="scrollbar-demo-item">
-                <div class="lostInfo">
-                    <img :src="hanleImg(item.lostImageUrl)">
-                </div>
-                <div class="lostInfo">{{ item.lostDescribe }}</div>
-                <div class="lostInfo">{{ item.lostTime }}</div>
-                <div class="lostInfo">{{ item.lostPublishTime }}</div>
-                <div class="lostInfo">{{ item.losersContact }}</div>
-                <div class="lostInfo">
-                    <el-button>查看详情</el-button>
-                    <el-button type="danger" circle>
-                        <el-icon><Delete /></el-icon>
-                    </el-button>
-                </div>
-            </li>
+            <template v-for="(item, index) of dataListCopy" :key="index">
+                <li class="scrollbar-demo-item">
+                    <div class="lostInfo">
+                        <img :src="hanleImg(item.lostImageUrl)">
+                    </div>
+                    <div class="lostInfo">{{ item.lostDescribe }}</div>
+                    <div class="lostInfo">{{ item.lostTime }}</div>
+                    <div class="lostInfo">{{ item.lostPublishTime }}</div>
+                    <div class="lostInfo">{{ item.losersContact }}</div>
+                    <div class="lostInfo">
+                        <el-button>查看详情</el-button>
+                        <el-button type="danger" circle @click="handleDelete(item.lostImageUrl, index)">
+                            <el-icon>
+                                <Delete />
+                            </el-icon>
+                        </el-button>
+                    </div>
+                </li>
+            </template>
+
 
             <el-empty v-if="!dataList.length" description="description" />
 
@@ -128,8 +133,21 @@ export default {
             console.log(res.data.data);
         })
     },
-    
+
     methods: {
+        handleDelete(url, index) {
+            const imageUrl = {
+                'url': url
+            }
+
+            axios.post('http://localhost:3000/userDeletePublishLostInfo', imageUrl).then(res => {
+                alert(res.data.message);
+                this.dataListCopy.splice(index, 1);//同步移除
+            }).catch(err => {
+                console.log(err.response.data.error);
+            })
+        },
+
         hanleImg(url) {// 设置代理处理图片
             const proxyUrl = `http://localhost:3000/image-proxy?url=${encodeURIComponent(url)}`;
             return proxyUrl;

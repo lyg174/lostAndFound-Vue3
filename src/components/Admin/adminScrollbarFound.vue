@@ -10,21 +10,26 @@
                 <div>详情</div>
             </li>
 
-            <li v-for="item of dataListCopy" :key="item" class="scrollbar-demo-item">
-                <div class="lostInfo">
-                    <img :src="hanleImg(item.foundImageUrl)">
-                </div>
-                <div class="lostInfo">{{ item.foundDescribe }}</div>
-                <div class="lostInfo">{{ item.foundTime }}</div>
-                <div class="lostInfo">{{ item.foundPublishTime }}</div>
-                <div class="lostInfo">{{ item.foundersContact }}</div>
-                <div class="lostInfo">
-                    <el-button>查看详情</el-button>
-                    <el-button type="danger" circle>
-                        <el-icon><Delete /></el-icon>
-                    </el-button>
-                </div>
-            </li>
+            <template v-for="(item, index) of dataListCopy" :key="index">
+                <li class="scrollbar-demo-item">
+                    <div class="lostInfo">
+                        <img :src="hanleImg(item.foundImageUrl)">
+                    </div>
+                    <div class="lostInfo">{{ item.foundDescribe }}</div>
+                    <div class="lostInfo">{{ item.foundTime }}</div>
+                    <div class="lostInfo">{{ item.foundPublishTime }}</div>
+                    <div class="lostInfo">{{ item.foundersContact }}</div>
+                    <div class="lostInfo">
+                        <el-button>查看详情</el-button>
+                        <el-button type="danger" circle @click="handleDelete(item.foundImageUrl, index)">
+                            <el-icon>
+                                <Delete />
+                            </el-icon>
+                        </el-button>
+                    </div>
+                </li>
+            </template>
+
 
             <el-empty v-if="!dataList.length" description="description" />
 
@@ -41,12 +46,14 @@
     background-color: #ecf5ff;
 }
 
-.scroll { // 滚动组件
+.scroll {
+    // 滚动组件
     max-height: 680.4px;
     position: relative;
 }
 
-.title {// 信息标题
+.title {
+    // 信息标题
     display: flex;
     justify-content: center;
     align-items: center;
@@ -57,7 +64,7 @@
     padding-bottom: 0;
     position: sticky; //设置粘性定位
     top: 0;
-    
+
     div {
         flex: 1;
         text-align: center;
@@ -69,12 +76,14 @@
         text-overflow: ellipsis;
         /* 当文本溢出时显示省略号 */
     }
+
     div:not(:last-child) {
         border-right: 1px solid black;
     }
 }
 
-.scrollbar-demo-item { // 后端获取数据并展示的栏位
+.scrollbar-demo-item {
+    // 后端获取数据并展示的栏位
     display: flex;
     align-items: center;
     justify-content: center;
@@ -101,6 +110,10 @@
         }
     }
 
+    // .lostInfo:last-child {
+    //     flex-direction: column;
+    // }
+
     div:not(:last-child) {
         border-right: 1px solid black;
     }
@@ -125,6 +138,19 @@ export default {
         })
     },
     methods: {
+        handleDelete(url, index) {
+            const imageUrl = {
+                'url': url
+            }
+
+            axios.post('http://localhost:3000/userDeletePublishFoundInfo', imageUrl).then(res => {
+                alert(res.data.message);
+                this.dataListCopy.splice(index, 1);//同步移除
+            }).catch(err => {
+                console.log(err.response.data.error);
+            })
+        },
+
         hanleImg(url) {// 设置代理处理图片
             const proxyUrl = `http://localhost:3000/image-proxy?url=${encodeURIComponent(url)}`;
             return proxyUrl;

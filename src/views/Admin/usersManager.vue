@@ -145,7 +145,7 @@ export default {
 
             axios.post('http://localhost:3000/delUsersAccountInfo', userInfo).then(res => {
                 alert(res.data.message)
-            }).catch(err => {
+            }).catch((err) => {
                 alert(err.response.data.error);
             })
         },
