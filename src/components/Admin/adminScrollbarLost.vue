@@ -15,12 +15,12 @@
                     <div class="lostInfo">
                         <img :src="hanleImg(item.lostImageUrl)">
                     </div>
-                    <div class="lostInfo">{{ item.lostDescribe }}</div>
+                    <div class="lostInfo">{{ item.lostName }}</div>
                     <div class="lostInfo">{{ item.lostTime }}</div>
                     <div class="lostInfo">{{ item.lostPublishTime }}</div>
                     <div class="lostInfo">{{ item.losersContact }}</div>
                     <div class="lostInfo">
-                        <el-button>查看详情</el-button>
+                        <el-button @click="getDetails(item.lostImageUrl)">查看详情</el-button>
                         <el-button type="danger" circle @click="handleDelete(item.lostImageUrl, index)">
                             <el-icon>
                                 <Delete />
@@ -35,12 +35,22 @@
 
         </el-scrollbar>
 
-
+        <el-dialog v-model="dialogTableVisible" title="信息详情" center width="30%">
+            <div class="textHeight">
+                {{ detailText }}
+            </div>
+        </el-dialog>
 
     </div>
 </template>
 
 <style lang="scss" scoped>
+.textHeight {
+    height: 400px;// 固定高度
+    font-size: 20px;
+    text-indent: 2em;// 首行缩进
+}
+
 .lostList {
     flex: 1; //填充剩余部分
     background-color: #ecf5ff;
@@ -123,6 +133,7 @@ export default {
     props: ['dataListCopy'],
     data() {
         return {
+            dialogTableVisible: false,
             dataList: [],
         }
     },
@@ -146,6 +157,12 @@ export default {
             }).catch(err => {
                 console.log(err.response.data.error);
             })
+        },
+        getDetails(url) {
+            const list = this.dataList.filter(item => item.lostImageUrl.includes(url));// 根据图片地址唯一性过滤出特定失物信息
+            this.detailText = list[0].descripText;
+            this.dialogTableVisible = true;
+            console.log(list[0].lostName);
         },
 
         hanleImg(url) {// 设置代理处理图片

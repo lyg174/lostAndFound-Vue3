@@ -16,7 +16,7 @@
                     <div class="lostInfo">
                         <img :src="hanleImg(item.foundImageUrl)">
                     </div>
-                    <div class="lostInfo">{{ item.foundDescribe }}</div>
+                    <div class="lostInfo">{{ item.foundName }}</div>
                     <div class="lostInfo">{{ item.foundTime }}</div>
                     <div class="lostInfo">{{ item.foundPublishTime }}</div>
                     <div class="lostInfo">{{ item.foundersContact }}</div>
@@ -51,8 +51,11 @@
                 <el-form-item label="招领物图片:">
                     <uploadImage ref="upload"></uploadImage>
                 </el-form-item>
-                <el-form-item label="招领物描述:">
-                    <el-input v-model="publishInfo.foundDescribe" />
+                <el-form-item label="招领物名称:">
+                    <el-input v-model="publishInfo.foundName" />
+                </el-form-item>
+                <el-form-item label="详细描述:">
+                    <el-input v-model="publishInfo.descripText" autosize type="textarea" placeholder="请输入详细内容" />
                 </el-form-item>
                 <el-form-item label="拾取时间:">
                     <div class="block">
@@ -86,7 +89,8 @@
 
 <style lang="scss" scoped>
 .found {
-    width: 100%;
+    // width: 100%;
+    flex: 1;
     background-color: skyblue;
     // background-image: url('../image/bg.jpg');
     // background-size: cover;
@@ -186,17 +190,19 @@ export default {
         return {
             dataList: [],
             centerDialogVisible: false,
+
             publishInfo: {
-                foundDescribe: '',
+                foundName: '',
                 foundTime: '',
                 foundPublishTime: '',
+                descripText: '',
                 myContact: ''
             }
         }
     },
     methods: {
         handleDelete(url, index) {// 删除发布信息
-            const imgUrl = {'url': url};//后端可根据url删除特定信息
+            const imgUrl = { 'url': url };//后端可根据url删除特定信息
             axios.post('http://localhost:3000/userDeletePublishFoundInfo', imgUrl).then(res => {
                 alert(res.data.message);
                 this.dataList.splice(index, 1);//同步移除

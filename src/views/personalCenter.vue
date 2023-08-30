@@ -71,7 +71,8 @@
 
 <style lang="scss">
 .center {
-    width: 100%;
+    // width: 100%;
+    flex: 1;
     background-image: url('../image/bg.jpg');
     background-size: cover;
     display: flex;
