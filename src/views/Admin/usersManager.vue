@@ -41,8 +41,8 @@
 
 <style lang="scss" scoped>
 .usersManager {
-    // flex: 1;
-    width: 100%;
+    flex: 1;
+    // width: 100%;
     background-color: skyblue;
 }
 
