@@ -17,7 +17,7 @@
                     <div class="lostInfo">{{ item.suggestion }}</div>
                     <div class="lostInfo">
 
-                        <el-button @click="handleDelete(index)" type="danger" circle>
+                        <el-button @click="handleDelete(item.suggestion, index)" type="danger" circle>
                             <el-icon>
                                 <Delete />
                             </el-icon>
@@ -73,6 +73,7 @@
                     </el-button>
                 </span>
             </template>
+
         </el-dialog>
     </div>
 </template>
@@ -189,6 +190,10 @@ export default {
     },
     methods: {
         handleFeedback() {
+            setTimeout(() => {
+                this.centerDialogVisible = false;
+            }, 1000);
+
             const userFeedbackInfo = this.userFeedback;
 
             const currentDate = new Date();//获取当前反馈发布时间
@@ -202,9 +207,18 @@ export default {
             }).catch((err) => {
                 alert(err.response.data.error);
             })
+
+
         },
-        handleDelete(index) {
-            console.log(index);
+        handleDelete(suggestion, index) {
+            axios.post('http://localhost:3000/userDeleteFeedbackInfo', { suggestion }).then(res => {
+                alert(res.data.message);
+                this.datalist.splice(index, 1);//同步移除
+            }).catch((err) => {
+                alert(err.response.data.error);
+                console.log(err.response.data.error);
+            })
+
         }
     },
     mounted() {
