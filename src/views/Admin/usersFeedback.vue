@@ -7,8 +7,7 @@
                 <div>姓名</div>
                 <div>性别</div>
                 <div>年龄</div>
-                <div>联系电话</div>
-                <div>电子邮箱</div>
+                <div class="contact title_01">联系方式</div>
                 <div>建议</div>
                 <div>删除</div>
             </li>
@@ -20,9 +19,13 @@
                     <div class="lostInfo">{{ item.name }}</div>
                     <div class="lostInfo">{{ item.gender }}</div>
                     <div class="lostInfo">{{ item.age }}</div>
-                    <div class="lostInfo">{{ item.phoneNumber }}</div>·
-                    <div class="lostInfo">{{ item.email }}</div>
-                    <div class="lostInfo">{{ item.suggestion }}</div>
+                    <div class="lostInfo contact">
+                        {{ item.phoneNumber }}<br />
+                        {{ item.email }}
+                    </div>
+                    <div class="lostInfo">
+                        <el-button type="primary" circle @click="getSuggestion(item.suggestion)">详情</el-button>
+                    </div>
                     <div class="lostInfo">
 
                         <el-button @click="handleDelete(item.suggestion, index)" type="danger" circle>
@@ -39,10 +42,22 @@
 
         </el-scrollbar>
 
+        <el-dialog v-model="dialogTableVisible" title="反馈详情" center width="30%">
+            <div class="textHeight">
+                {{ suggestion }}
+            </div>
+        </el-dialog>
+
     </div>
 </template>
 
 <style lang="scss" scoped>
+.textHeight {
+    height: 400px;// 固定高度
+    font-size: 20px;
+    text-indent: 2em;// 首行缩进
+}
+
 .feedback {
     flex: 1;
     background-color: skyblue;
@@ -61,7 +76,7 @@
     position: sticky; //设置粘性定位
     top: 0;
 
-    div {
+    div:not(:nth-last-of-type(3)) {
         flex: 1;
         text-align: center;
         border-bottom: 1px solid black;
@@ -91,6 +106,8 @@
 }
 
 .scrollbar-demo-item {
+    height: 100px;
+
     // 后端获取数据并展示的栏位
     display: flex;
     align-items: center;
@@ -105,17 +122,20 @@
 
 
 
-    .lostInfo {
+    .lostInfo:not(:nth-last-of-type(3)) {
         flex: 1;
-        height: 200px;
+        height: 100px;
         display: flex;
         justify-content: center;
         align-items: center;
+        font-size: 15px;
 
         text-overflow: ellipsis;
         /* 当文本溢出时显示省略号 */
         overflow: auto;
         /* 隐藏溢出内容 */
+        white-space: nowrap;
+        /* 不换行，防止文本溢出 */
 
         // line-height: 200px;
     }
@@ -123,6 +143,19 @@
     div:not(:last-child) {
         border-right: 1px solid black;
     }
+}
+
+.contact {
+    height: 100px;
+    width: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title_01 {
+    height: auto;
+    border-bottom: 1px solid black;
 }
 </style>
 
@@ -132,8 +165,10 @@ import axios from 'axios';
 export default {
     data() {
         return {
+            dialogTableVisible: false,
             centerDialogVisible: false,
             datalist: [],
+            suggestion: '',
             options: [
                 {
                     value: '男'
@@ -161,6 +196,10 @@ export default {
                 alert(err.response.data.error);
             })
 
+        },
+        getSuggestion(suggestion) {
+            this.suggestion = suggestion;
+            this.dialogTableVisible = true;
         }
     },
     mounted() {

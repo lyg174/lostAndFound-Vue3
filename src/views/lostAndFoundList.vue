@@ -143,8 +143,8 @@ export default {
             console.log(this.text);
             if (this.text !== '') {
                 this.dataListCopy = this.dataList.filter(item => {
-                    if (item.lostDescribe) return item.lostDescribe.includes(this.text);// 处理失物数据
-                    if (item.foundDescribe) return item.foundDescribe.includes(this.text);// 处理招领物数据
+                    if (item.lostName) return item.lostName.includes(this.text);// 处理失物数据
+                    if (item.foundName) return item.foundName.includes(this.text);// 处理招领物数据
                 });
             } else {// 内容为空时
                 this.dataListCopy = this.dataList;

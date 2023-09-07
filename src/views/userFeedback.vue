@@ -143,7 +143,7 @@
 
     .lostInfo {
         flex: 1;
-        height: 200px;
+        height: 100px;
         display: flex;
         justify-content: center;
         align-items: center;
