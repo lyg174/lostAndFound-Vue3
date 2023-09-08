@@ -8,6 +8,7 @@ import lostList from '../views/lostAndfound/lostList.vue'
 import foundList from '../views/lostAndfound/foundList.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
+import lostPassword from '../views/lostPassword.vue'
 import publishInfo from '../views/Admin/publishInfo.vue'
 import lostInfo from '../views/Admin/lostAndfoundInfo/lostInfo.vue'
 import foundInfo from '../views/Admin/lostAndfoundInfo/foundInfo.vue'
@@ -46,6 +47,11 @@ const routes = [
         name: 'Register',
         path: '/register',
         component: Register,
+    },
+    {
+        name: 'lostPassword',
+        path: '/lostPassword',
+        component: lostPassword
     },
     {
         path: '/list',
@@ -92,6 +98,11 @@ router.beforeEach((to, from, next) => {
     let loginStatus = sessionStorage.getItem('loginStatus');
 
     if (to.name === 'Register') {
+        next()
+        return
+    }
+
+    if (to.name === 'lostPassword') {
         next()
         return
     }

@@ -7,7 +7,7 @@
         <el-input class="info" v-model="psw" type="password" placeholder="密码:" show-password />
         <router-link to="/register" class="left">注册</router-link>
         <el-button class="btn" type="primary" round @click="handleLogin">登录</el-button>
-        <a href="#" class="right">忘记密码？</a>
+        <router-link to="/lostPassword" class="right">忘记密码?</router-link>
       </form>
 
     </div>
