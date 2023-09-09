@@ -110,6 +110,10 @@ export default {
         },
         changeInfo() {
 
+            if (this.newPassword === '' && this.confirmPSW === '') {
+                alert('密码不能为空');
+                return;
+            }
 
             if (this.newPassword !== this.confirmPSW) {
                 alert('两次输入密码不一致');
