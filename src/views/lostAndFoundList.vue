@@ -8,12 +8,20 @@
                 <el-menu-item index="2" @click="changeRouter('/list/foundlist')">招领列表</el-menu-item>
 
                 <el-menu-item>
-                    <el-input index="3" class="search" v-model="text" placeholder="请输入物品名称" maxlength="10"
-                        show-word-limit clearable>
+                    <el-input index="3" class="search" v-model="text" placeholder="请输入物品名称" maxlength="10" show-word-limit
+                        clearable>
                         <template #append>
                             <el-button type="primary" @click.stop="handleSearch">搜索</el-button>
                         </template>
                     </el-input>
+                </el-menu-item>
+
+                <el-menu-item>
+                    <el-button type="info" @click="handleMsg" style="background-color: #4d5154; border: none;">
+                        <el-icon style="margin: 0;">
+                            <Message />
+                        </el-icon>
+                    </el-button>
                 </el-menu-item>
 
                 <el-menu-item index="4" class="avatar">
@@ -108,16 +116,29 @@ a {
 </style>
 
 <script>
+import axios from 'axios';
 import uploadAvatar from '../components/uploadAvatar.vue'
+import { ElNotification } from 'element-plus'
 
 export default {
     components: {
         uploadAvatar,
     },
+    beforeMount() {
+
+
+        axios.get('http://localhost:3000/getInfo').then(res => {
+            this.msg = res.data.message;
+            this.handleMsgAuto(); //第一次进入页面时触发
+        }).catch((err) => {
+            alert(err.response.data.error);
+        })
+    },
     data() {
         return {
             centerDialogVisible: false,
             text: '',
+            msg: '',
             dataList: [],// 用于接受子组件数据
             dataListCopy: []// 提供搜索后的数据
         }
@@ -154,6 +175,31 @@ export default {
         copyArray(list) {// 接受子组件传来的数据
             this.dataList = list;
             this.dataListCopy = this.dataList.slice();// 复制
+        },
+        handleMsgAuto() {
+            const controlClick = sessionStorage.getItem('controlClick');
+
+            if (controlClick == 1) { // 只在第一次登录时只触发一次
+                const msg = this.msg.information;
+                console.log(msg);
+                ElNotification({
+                    title: '消息通知',
+                    message: msg,
+                    type: 'info',
+                    duration: 3000, // 1s后自动退出
+                })
+
+                sessionStorage.setItem('controlClick', 0);
+            }
+        },
+        handleMsg() {
+            const msg = this.msg.information;
+
+            ElNotification({
+                title: '消息通知',
+                message: msg,
+                type: 'info',
+            })
         },
 
         hanleImg() {// 设置代理处理图片

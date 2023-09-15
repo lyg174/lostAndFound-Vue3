@@ -15,20 +15,20 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 // 创建一个新的 store 实例
-const store = createStore({
-    state () {
-      return {
-        status: true
-      }
-    },
-    mutations: {
-      changeLogin (state) {
-        state.status = !state.status
-      }
-    }
-  })
+// const store = createStore({
+//     state () {
+//       return {
+//         status: true
+//       }
+//     },
+//     mutations: {
+//       changeLogin (state) {
+//         state.status = !state.status
+//       }
+//     }
+//   })
 
 app.use(router)
 app.use(ElementPlus)
-app.use(store)
+// app.use(store)
 app.mount('#app')

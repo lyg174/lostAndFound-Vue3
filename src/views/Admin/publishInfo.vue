@@ -8,12 +8,20 @@
                 <el-menu-item index="2" @click="changeRouter('/publishinfo/foundinfo')">招领列表</el-menu-item>
 
                 <el-menu-item>
-                    <el-input index="3" class="search" v-model="text" placeholder="请输入物品名称" maxlength="10"
-                        show-word-limit clearable>
+                    <el-input index="3" class="search" v-model="text" placeholder="请输入物品名称" maxlength="10" show-word-limit
+                        clearable>
                         <template #append>
                             <el-button type="primary" @click.stop="handleSearch">搜索</el-button>
                         </template>
                     </el-input>
+                </el-menu-item>
+
+                <el-menu-item>
+                    <el-button type="info" @click="sendMsgDialog = true" style="background-color: #4d5154; border: none;">
+                        <el-icon style="margin: 0;">
+                            <Message />
+                        </el-icon>
+                    </el-button>
                 </el-menu-item>
 
                 <el-menu-item index="4" class="avatar">
@@ -38,6 +46,21 @@
         <el-dialog v-model="centerDialogVisible" title="上传新头像" width="30%" align-center center>
             <!-- 头像上传组件 -->
             <uploadAvatar @hanleSubmit="hanleDialog"></uploadAvatar>
+
+        </el-dialog>
+
+        <el-dialog v-model="sendMsgDialog" title="发布通知" width="30%" align-center center>
+
+            <el-input v-model="msg" :rows="2" type="textarea" placeholder="Please input" />
+
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="sendMsgDialog = false">取消</el-button>
+                    <el-button type="primary" @click="sendMsg">
+                        发布
+                    </el-button>
+                </span>
+            </template>
 
         </el-dialog>
 
@@ -108,16 +131,26 @@ a {
 </style>
 
 <script>
+import axios from 'axios'
 import uploadAvatar from '../../components/uploadAvatar.vue'
 
 export default {
     components: {
         uploadAvatar,
     },
+    mounted() {
+        axios.get('http://localhost:3000/getInfo').then(res => {
+            this.msg = res.data.message.information;
+        }).catch((err) => {
+            alert(err.response.data.error);
+        })
+    },
     data() {
         return {
             centerDialogVisible: false,
+            sendMsgDialog: false,
             text: '',
+            msg: '',
             dataList: [],// 用于接受子组件数据
             dataListCopy: []// 提供搜索后的数据
         }
@@ -154,6 +187,16 @@ export default {
         copyArray(list) {// 接受子组件传来的数据
             this.dataList = list;
             this.dataListCopy = this.dataList.slice();// 复制
+        },
+        sendMsg() {
+            const msg = this.msg;
+
+            axios.post('http://localhost:3000/sendMsg', { msg }).then(res => {
+                alert(res.data.message);
+                this.sendMsgDialog = false;
+            }).catch((err) => {
+                alert(err.response.data.error);
+            })
         },
 
         hanleImg() {// 设置代理处理图片

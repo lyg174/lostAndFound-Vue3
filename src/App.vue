@@ -99,7 +99,7 @@ export default {
 
 .app {
   display: flex;
-  width: 70%;
+  width: 70%
   /* height: 0; */
 }
 </style>
