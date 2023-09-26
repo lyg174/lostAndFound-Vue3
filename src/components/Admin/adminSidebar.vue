@@ -55,7 +55,7 @@
 }
 
 li.el-menu-item {
-    justify-content: center; //文字居中
+
 
     span {
         overflow: hidden;
@@ -68,6 +68,7 @@ li.el-menu-item {
 }
 
 li.el-menu-item:last-child {
+    justify-content: center; //文字居中
     margin-top: 300px;
 }
 </style>

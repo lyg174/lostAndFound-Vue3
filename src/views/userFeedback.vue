@@ -52,7 +52,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="年龄:">
-                    <el-input v-model="userFeedback.age" />
+                    <el-input-number v-model="userFeedback.age" />
                 </el-form-item>
                 <el-form-item label="联系电话:">
                     <el-input v-model="userFeedback.phoneNumber" />
@@ -201,6 +201,13 @@ export default {
 
             userFeedbackInfo.username = sessionStorage.getItem('username');
             userFeedbackInfo.feedTime = feedTime;
+
+            for (let item in userFeedbackInfo) {// 判断相关内容是否为空
+                if (!userFeedbackInfo[item]) {
+                    alert('请填写完整信息');
+                    return;
+                }
+            }
 
             axios.post('http://localhost:3000/userPublishFeedbackInfo', userFeedbackInfo).then(res => {
                 alert(res.data.message);

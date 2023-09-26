@@ -220,11 +220,23 @@ export default {
                 this.centerDialogVisible = false;
             }, 1000);
 
-            this.publishInfo.foundTime = this.publishInfo.foundTime.toLocaleDateString('en-CA');// 传化成普通日期字符串格式，例如：2020-05-25
-            this.publishInfo.foundPublishTime = this.publishInfo.foundPublishTime.toLocaleDateString('en-CA');
+            if (this.publishInfo.foundTime && this.publishInfo.foundPublishTime) {
+                this.publishInfo.foundTime = this.publishInfo.foundTime.toLocaleDateString('en-CA');// 传化成普通日期字符串格式，例如：2020-05-25
+                this.publishInfo.foundPublishTime = this.publishInfo.foundPublishTime.toLocaleDateString('en-CA');
+            } else {
+                alert('时间不可为空！');
+                return;
+            }
 
             const publishInfo = this.publishInfo;
             publishInfo.username = sessionStorage.getItem('username')//获取用户名
+
+            for (let item in publishInfo) {// 判断相关内容是否为空
+                if (!publishInfo[item]) {
+                    alert('请填写完整信息');
+                    return;
+                }
+            }
 
             this.$refs.upload.userData = publishInfo;//将处理后的信息提交给子组件
 

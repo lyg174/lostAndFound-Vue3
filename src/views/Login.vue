@@ -23,8 +23,8 @@ export default {
 
   data() {
     return {
-      user: '',
-      psw: '',
+      user: 'admin',
+      psw: '123',
       isLogin: true,// 控制跳转注册界面
     }
   },
@@ -52,7 +52,7 @@ export default {
           sessionStorage.setItem('avatar', 'usersAvatar/0fc7d20532fdaf769a25683617711png.png');//如果头像为空，则设置为默认头像
         } else sessionStorage.setItem('avatar', datalist.avatar);// 头像地址
 
-        if (userMsg.username == 1741174892) {// 管理员账号
+        if (userMsg.username == 'admin') {// 管理员账号
           this.$router.push('/publishinfo/lostinfo');
           this.$emit('adminLoggedIn'); // 触发@adminLoggedIn改变adminSidebar显示状态
           console.log(555);

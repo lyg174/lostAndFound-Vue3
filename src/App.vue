@@ -26,10 +26,10 @@ export default {
     setLogin() {// 设置登录状态loginStatus
       let loginStatus = sessionStorage.getItem('loginStatus')
       let user = sessionStorage.getItem('username')
-      if (loginStatus === 'true' && user != 1741174892) {// 根据登录状态改变Sidebar组件显示情况
+      if (loginStatus === 'true' && user != 'admin') {// 根据登录状态改变Sidebar组件显示情况
         this.loginView = true;
         this.username = user;
-      } else if (loginStatus === 'true' && user == 1741174892) {// 管理员界面
+      } else if (loginStatus === 'true' && user == 'admin') {// 管理员界面
         this.adminView = true;
         this.username = user;
       }
@@ -37,7 +37,7 @@ export default {
     toList() {// 登录成功后在当前界面浏览器刷新，重定向到'/list/lostlist',若为管理员，则定向到'/publishinfo/lostinfo'
       let loginStatus = sessionStorage.getItem('loginStatus')
       if (loginStatus === 'true' && (this.loginView === true || this.adminView === true) && this.username !== '') {
-        if (this.username != 1741174892) this.$router.push('/list/lostlist');
+        if (this.username != 'admin') this.$router.push('/list/lostlist');
         else this.$router.push('/publishinfo/lostinfo');
       }
 

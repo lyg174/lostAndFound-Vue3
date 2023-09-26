@@ -65,9 +65,11 @@
 }
 
 li.el-menu-item {
-    justify-content: center; //文字居中
+    // justify-content: center; //文字居中
 
     span {
+        font-size: 15px;
+
         overflow: hidden;
         /* 隐藏溢出内容 */
         white-space: nowrap;
@@ -78,6 +80,7 @@ li.el-menu-item {
 }
 
 li.el-menu-item:last-child {
+    justify-content: center; //文字居中
     margin-top: 300px;
 }
 </style>
