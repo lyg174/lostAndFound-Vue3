@@ -20,12 +20,26 @@
                     <div class="lostInfo">{{ item.lostPublishTime }}</div>
                     <div class="lostInfo">{{ item.losersContact }}</div>
                     <div class="lostInfo">
-                        <el-button @click="getDetails(item.lostImageUrl)">查看详情</el-button>
-                        <el-button type="danger" circle @click="handleDelete(item.lostImageUrl, index)">
-                            <el-icon>
-                                <Delete />
-                            </el-icon>
-                        </el-button>
+
+                        <div>
+                            <el-button @click="getDetails(item.lostImageUrl)">查看详情</el-button>
+                            <el-button type="danger" circle @click="handleDelete(item.lostImageUrl, index)">
+                                <el-icon>
+                                    <Delete />
+                                </el-icon>
+                            </el-button>
+
+                            <el-tooltip :content="'是否允许发布: ' + item.publish_status" placement="top">
+                                <el-switch v-model="item.publish_status"
+                                    @click="changePublishStatus(item.publish_status, item.lostImageUrl)"
+                                    style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
+                                    active-value="true" inactive-value="false">
+
+                                </el-switch>
+                            </el-tooltip>
+                        </div>
+
+
                     </div>
                 </li>
             </template>
@@ -46,9 +60,9 @@
 
 <style lang="scss" scoped>
 .textHeight {
-    height: 400px;// 固定高度
+    height: 400px; // 固定高度
     font-size: 20px;
-    text-indent: 2em;// 首行缩进
+    text-indent: 2em; // 首行缩进
 }
 
 .lostList {
@@ -163,6 +177,18 @@ export default {
             this.detailText = list[0].descripText;
             this.dialogTableVisible = true;
             console.log(list[0].lostName);
+        },
+        changePublishStatus(status, url) {
+            const info = {
+                publish_status: status,
+                lostImageUrl: url
+            }
+
+            axios.post('http://localhost:3000/changeUsersPublishStatus', info).then(res => {
+                console.log(res.data.message);
+            }).catch(err => {
+                console.log(err.response.data.error);
+            })
         },
 
         hanleImg(url) {// 设置代理处理图片

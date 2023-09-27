@@ -10,18 +10,21 @@
                 <div>详情</div>
             </li>
 
-            <li v-for="item of dataListCopy" :key="item" class="scrollbar-demo-item">
-                <div class="lostInfo">
-                    <img :src="hanleImg(item.lostImageUrl)">
-                </div>
-                <div class="lostInfo">{{ item.lostName }}</div>
-                <div class="lostInfo">{{ item.lostTime }}</div>
-                <div class="lostInfo">{{ item.lostPublishTime }}</div>
-                <div class="lostInfo">{{ item.losersContact }}</div>
-                <div class="lostInfo">
-                    <el-button @click="getDetails(item.lostImageUrl)">查看详情</el-button>
-                </div>
-            </li>
+            <template v-for="item of dataListCopy" :key="item">
+                <li v-if="item.publish_status === 'true'" class="scrollbar-demo-item">
+                    <div class="lostInfo">
+                        <img :src="hanleImg(item.lostImageUrl)">
+                    </div>
+                    <div class="lostInfo">{{ item.lostName }}</div>
+                    <div class="lostInfo">{{ item.lostTime }}</div>
+                    <div class="lostInfo">{{ item.lostPublishTime }}</div>
+                    <div class="lostInfo">{{ item.losersContact }}</div>
+                    <div class="lostInfo">
+                        <el-button @click="getDetails(item.lostImageUrl)">查看详情</el-button>
+                    </div>
+                </li>
+            </template>
+
 
             <el-empty v-if="!dataList.length" description="description" />
 
@@ -38,9 +41,9 @@
 
 <style lang="scss" scoped>
 .textHeight {
-    height: 400px;// 固定高度
+    height: 400px; // 固定高度
     font-size: 20px;
-    text-indent: 2em;// 首行缩进
+    text-indent: 2em; // 首行缩进
 }
 
 .lostList {
@@ -137,7 +140,7 @@ export default {
             console.log(res.data.data);
         })
     },
-    
+
     methods: {
         getDetails(url) {
             const list = this.dataList.filter(item => item.lostImageUrl.includes(url));// 根据图片地址唯一性过滤出特定失物信息
