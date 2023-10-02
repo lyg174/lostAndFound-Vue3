@@ -193,6 +193,13 @@ export default {
             }
         },
         handleMsg() {
+
+            axios.get('http://localhost:3000/getInfo').then(res => {// 实现实时更新(类似)
+                this.msg = res.data.message;
+            }).catch((err) => {
+                alert(err.response.data.error);
+            })
+
             const msg = this.msg.information;
 
             ElNotification({
