@@ -1,87 +1,87 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import lostAndFoundList from '../views/lostAndFoundList.vue'
-import personalCenter from '../views/personalCenter.vue'
-import foundPublish from '../views/foundPublish.vue'
-import lostPublish from '../views/lostPublish.vue'
-import userFeedback from '../views/userFeedback.vue'
-import lostList from '../views/lostAndfound/lostList.vue'
-import foundList from '../views/lostAndfound/foundList.vue'
-import Login from '../views/Login.vue'
-import Register from '../views/Register.vue'
-import lostPassword from '../views/lostPassword.vue'
-import publishInfo from '../views/Admin/publishInfo.vue'
-import lostInfo from '../views/Admin/lostAndfoundInfo/lostInfo.vue'
-import foundInfo from '../views/Admin/lostAndfoundInfo/foundInfo.vue'
-import usersManager from '../views/Admin/usersManager.vue'
-import usersFeedback from '../views/Admin/usersFeedback.vue'
+// import lostAndFoundList from '../views/lostAndFoundList.vue'
+// import personalCenter from '../views/personalCenter.vue'
+// import foundPublish from '../views/foundPublish.vue'
+// import lostPublish from '../views/lostPublish.vue'
+// import userFeedback from '../views/userFeedback.vue'
+// import lostList from '../views/lostAndfound/lostList.vue'
+// import foundList from '../views/lostAndfound/foundList.vue'
+// import Login from '../views/Login.vue'
+// import Register from '../views/Register.vue'
+// import lostPassword from '../views/lostPassword.vue'
+// import publishInfo from '../views/Admin/publishInfo.vue'
+// import lostInfo from '../views/Admin/lostAndfoundInfo/lostInfo.vue'
+// import foundInfo from '../views/Admin/lostAndfoundInfo/foundInfo.vue'
+// import usersManager from '../views/Admin/usersManager.vue'
+// import usersFeedback from '../views/Admin/usersFeedback.vue'
 
 const routes = [
     {
         path: '/publishinfo',
-        component: publishInfo,
+        component: () => import('../views/Admin/publishInfo.vue'),
         children: [
             {
                 path: '/publishinfo/lostinfo',
-                component: lostInfo
+                component: () => import('../views/Admin/lostAndfoundInfo/lostInfo.vue')
             },
             {
                 path: '/publishinfo/foundinfo',
-                component: foundInfo
+                component: () => import('../views/Admin/lostAndfoundInfo/foundInfo.vue')
             }
         ]
     },
     {
         path: '/usersmanager',
-        component: usersManager
+        component: () => import('../views/Admin/usersManager.vue')
     },
     {
         path: '/usersfeedback',
-        component: usersFeedback
+        component: () => import('../views/Admin/usersFeedback.vue')
     },
     {
         name: 'Login',
         path: '/login',
-        component: Login,
+        component: () => import('../views/Login.vue')
     },
     {
         name: 'Register',
         path: '/register',
-        component: Register,
+        component: () => import('../views/Register.vue')
     },
     {
         name: 'lostPassword',
         path: '/lostPassword',
-        component: lostPassword
+        component: () => import('../views/lostPassword.vue')
     },
     {
         path: '/list',
-        component: lostAndFoundList,
+        component: () => import('../views/lostAndFoundList.vue'),
         children: [
             {
                 path: '/list/lostlist',
-                component: lostList
+                component: () => import('../views/lostAndfound/lostList.vue')
             },
             {
                 path: '/list/foundlist',
-                component: foundList
+                component: () => import('../views/lostAndfound/foundList.vue')
             }
         ]
     },
     {
         path: '/center',
-        component: personalCenter,
+        component: () => import('../views/personalCenter.vue'),
     },
     {
         path: '/found',
-        component: foundPublish,
+        component: () => import('../views/foundPublish.vue'),
     },
     {
         path: '/lost',
-        component: lostPublish,
+        component: () => import('../views/lostPublish.vue'),
     },
     {
         path: '/feedback',
-        component: userFeedback,
+        component: () => import('../views/userFeedback.vue'),
     },
     {
         path: '/', // 初始界面
