@@ -10,7 +10,7 @@
                 <div>删除账户</div>
             </li>
 
-            <template v-for="item of datalist" :key="item">
+            <template v-for="(item, index) of datalist" :key="index">
                 <li class="scrollbar-demo-item">
                     <div class="lostInfo">{{ item.username }}</div>
                     <div class="lostInfo">{{ item.password }}</div>·
@@ -25,7 +25,7 @@
                                 编辑
                             </el-button>
 
-                            <el-button @click="handleDelete(item.username)" type="danger" circle>
+                            <el-button @click="handleDelete(item.username, index)" type="danger" circle>
                                 <el-icon>
                                     <Delete />
                                 </el-icon>
@@ -193,7 +193,7 @@ export default {
         }
     },
     methods: {
-        handleDelete(username) {
+        handleDelete(username, index) {
             if (username === 'admin') {
                 alert('不可删除!!');
                 return;
@@ -205,7 +205,7 @@ export default {
 
             axios.post('http://localhost:3000/delUsersAccountInfo', userInfo).then(res => {
                 alert(res.data.message);
-                this.dataList.splice(index, 1);//同步移除
+                this.datalist.splice(index, 1);//同步移除
             }).catch((err) => {
                 alert(err.response.data.error);
             })
