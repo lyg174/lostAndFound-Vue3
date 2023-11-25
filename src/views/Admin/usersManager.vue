@@ -13,7 +13,7 @@
             <template v-for="(item, index) of datalist" :key="index">
                 <li class="scrollbar-demo-item">
                     <div class="lostInfo">{{ item.username }}</div>
-                    <div class="lostInfo">{{ item.password }}</div>·
+                    <div class="lostInfo">{{ item.password }}</div>
                     <div class="lostInfo">{{ item.nickname }}</div>
                     <div class="lostInfo">
                         <img :src="hanleImg(item.avatar)" />
@@ -91,6 +91,7 @@
 .usersManager {
     flex: 1;
     // width: 100%;
+    // height: 100%;
     background-color: skyblue;
 }
 
@@ -263,10 +264,13 @@ export default {
     mounted() {
         axios.get('http://localhost:3000/usersAccountInfo').then(res => {
 
-            let username = res.data.data[0];
-            let length = res.data.data.length;
-            res.data.data[0] = res.data.data[length - 1];
-            res.data.data[length - 1] = username;
+            res.data.data.forEach((item, index) => {
+                if (item.username === 'admin') {
+                    const first = res.data.data[0];
+                    res.data.data[0] = res.data.data[index];
+                    res.data.data[index] = first;
+                }
+            });
 
             this.datalist = res.data.data;
             console.log(this.datalist);

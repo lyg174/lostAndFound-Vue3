@@ -22,7 +22,7 @@
                     <div class="lostInfo">{{ item.foundersContact }}</div>
                     <div class="lostInfo">
 
-                        <el-button @click="handleDelete(item.foundImageUrl, index)" type="danger" circle>
+                        <el-button @click="handleDelete(item.id, index)" type="danger" circle>
                             <el-icon>
                                 <Delete />
                             </el-icon>
@@ -201,9 +201,9 @@ export default {
         }
     },
     methods: {
-        handleDelete(url, index) {// 删除发布信息
-            const imgUrl = { 'url': url };//后端可根据url删除特定信息
-            axios.post('http://localhost:3000/userDeletePublishFoundInfo', imgUrl).then(res => {
+        handleDelete(id, index) {// 删除发布信息
+            // const imgUrl = { 'url': url };//后端可根据url删除特定信息
+            axios.post('http://localhost:3000/userDeletePublishFoundInfo', {id}).then(res => {
                 alert(res.data.message);
                 this.dataList.splice(index, 1);//同步移除
             }).catch((err) => {

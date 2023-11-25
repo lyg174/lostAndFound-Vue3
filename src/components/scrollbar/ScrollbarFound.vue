@@ -10,18 +10,20 @@
                 <div>详情</div>
             </li>
 
-            <li v-for="item of dataListCopy" :key="item" class="scrollbar-demo-item">
-                <div class="lostInfo">
-                    <img :src="hanleImg(item.foundImageUrl)">
-                </div>
-                <div class="lostInfo">{{ item.foundName }}</div>
-                <div class="lostInfo">{{ item.foundTime }}</div>
-                <div class="lostInfo">{{ item.foundPublishTime }}</div>
-                <div class="lostInfo">{{ item.foundersContact }}</div>
-                <div class="lostInfo">
-                    <el-button @click="getDetails(item.foundImageUrl)">查看详情</el-button>
-                </div>
-            </li>
+            <template v-for="item of dataListCopy" :key="item">
+                <li v-if="item.publish_status === 'true'" class="scrollbar-demo-item">
+                    <div class="lostInfo">
+                        <img :src="hanleImg(item.foundImageUrl)">
+                    </div>
+                    <div class="lostInfo">{{ item.foundName }}</div>
+                    <div class="lostInfo">{{ item.foundTime }}</div>
+                    <div class="lostInfo">{{ item.foundPublishTime }}</div>
+                    <div class="lostInfo">{{ item.foundersContact }}</div>
+                    <div class="lostInfo">
+                        <el-button @click="getDetails(item.foundImageUrl)">查看详情</el-button>
+                    </div>
+                </li>
+            </template>
 
             <el-empty v-if="!dataList.length" description="description" />
 
@@ -38,9 +40,9 @@
 
 <style lang="scss" scoped>
 .textHeight {
-    height: 400px;// 固定高度
+    height: 400px; // 固定高度
     font-size: 20px;
-    text-indent: 2em;// 首行缩进
+    text-indent: 2em; // 首行缩进
 }
 
 .lostList {

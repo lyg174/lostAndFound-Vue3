@@ -12,6 +12,7 @@
     "@element-plus/icons-vue": "^2.1.0",
     "animate.css": "^4.1.1",
     "axios": "^1.4.0",
+    "echarts": "^5.4.3",
     "element-plus": "^2.3.9",
     "query": "^0.2.0",
     "sass": "^1.65.1",

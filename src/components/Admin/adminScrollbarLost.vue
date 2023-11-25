@@ -23,7 +23,7 @@
 
                         <div>
                             <el-button @click="getDetails(item.lostImageUrl)">查看详情</el-button>
-                            <el-button type="danger" circle @click="handleDelete(item.lostImageUrl, index)">
+                            <el-button type="danger" circle @click="handleDelete(item.id, index)">
                                 <el-icon>
                                     <Delete />
                                 </el-icon>
@@ -160,12 +160,12 @@ export default {
     },
 
     methods: {
-        handleDelete(url, index) {
-            const imageUrl = {
-                'url': url
-            }
+        handleDelete(id, index) {
+            // const imageUrl = {
+            //     'url': url
+            // }
 
-            axios.post('http://localhost:3000/userDeletePublishLostInfo', imageUrl).then(res => {
+            axios.post('http://localhost:3000/userDeletePublishLostInfo', {id}).then(res => {
                 alert(res.data.message);
                 this.dataListCopy.splice(index, 1);//同步移除
             }).catch(err => {

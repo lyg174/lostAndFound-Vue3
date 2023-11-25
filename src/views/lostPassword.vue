@@ -56,7 +56,7 @@
     justify-content: center;
     align-items: center;
     /* background: linear-gradient(45deg, #5c32bf 0%, #196073 50%, #26dc69 100%); */
-    background-color: rgb(237, 215, 215, 0.8);
+    background-color: rgb(234, 100, 6, 0.4);
 }
 
 .foundPsw {

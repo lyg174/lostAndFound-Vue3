@@ -19,6 +19,11 @@
                     <span>用户反馈</span>
                 </el-menu-item>
 
+                <el-menu-item index="3" @click="handleRouter('/lostAndFoundSum')">
+                    <el-icon><Message /></el-icon>
+                    <span>数据统计</span>
+                </el-menu-item>
+
                 <el-menu-item @click="dialogVisible = true">
                     <span>退出登录</span>
                     <el-icon>

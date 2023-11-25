@@ -39,6 +39,10 @@ const routes = [
         component: () => import('../views/Admin/usersFeedback.vue')
     },
     {
+        path: '/lostAndFoundSum',
+        component: () => import('../views/Admin/lostAndFoundSum.vue')
+    },
+    {
         name: 'Login',
         path: '/login',
         component: () => import('../views/Login.vue')
