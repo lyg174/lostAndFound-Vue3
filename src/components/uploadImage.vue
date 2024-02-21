@@ -15,6 +15,9 @@
 </template>
 
 <script>
+import { ElMessage } from 'element-plus'
+
+
 export default {
   inject: ['api'],// 接受父组件传来的api接口
   data() {
@@ -33,7 +36,7 @@ export default {
       this.uploadRef.submit();
     },
     handleImageSuccess(res) {
-      alert(res.message)
+      ElMessage.success(res.message)
     }
   }
 

@@ -1,33 +1,23 @@
 <template>
     <div class="lostList">
-        <el-scrollbar class="scroll">
-            <li class="title">
-                <div>招领物图片</div>
-                <div>招领物名称</div>
-                <div>拾取时间</div>
-                <div>招领物发布时间</div>
-                <div>拾取人联系方式</div>
-                <div>详情</div>
-            </li>
+        <el-table :data="dataListCopy" style="width: 100%" table-layout="fixed" max-height="680">
+            <el-table-column prop="foundImageUrl" label="招领物图片" align="center">
+                <template #default="scope">
+                    <img style="width: 100%; height: 150px;" :src="hanleImg(scope.row.foundImageUrl)">
+                </template>
+            </el-table-column>
+            <el-table-column prop="foundName" label="招领物名称" align="center" />
+            <el-table-column prop="foundTime" label="拾取时间" align="center" />
+            <el-table-column prop="foundPublishTime" label="招领物发布时间" align="center" />
+            <el-table-column prop="foundersContact" label="拾取人联系方式" align="center" />
+            <el-table-column prop="address" label="详情" align="center">
 
-            <template v-for="item of dataListCopy" :key="item">
-                <li v-if="item.publish_status === 'true'" class="scrollbar-demo-item">
-                    <div class="lostInfo">
-                        <img :src="hanleImg(item.foundImageUrl)">
-                    </div>
-                    <div class="lostInfo">{{ item.foundName }}</div>
-                    <div class="lostInfo">{{ item.foundTime }}</div>
-                    <div class="lostInfo">{{ item.foundPublishTime }}</div>
-                    <div class="lostInfo">{{ item.foundersContact }}</div>
-                    <div class="lostInfo">
-                        <el-button @click="getDetails(item.foundImageUrl)">查看详情</el-button>
-                    </div>
-                </li>
-            </template>
+                <template #default="scope">
+                    <el-button @click="getDetails(scope.row.foundImageUrl)">查看详情</el-button>
+                </template>
 
-            <el-empty v-if="!dataList.length" description="description" />
-
-        </el-scrollbar>
+            </el-table-column>
+        </el-table>
 
         <el-dialog v-model="dialogTableVisible" title="信息详情" center width="30%">
             <div class="textHeight">

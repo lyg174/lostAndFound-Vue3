@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 // import lostAndFoundList from '../views/lostAndFoundList.vue'
 // import personalCenter from '../views/personalCenter.vue'
 // import foundPublish from '../views/foundPublish.vue'
@@ -94,7 +94,7 @@ const routes = [
 ]
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHashHistory(),
     routes,
 })
 

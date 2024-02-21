@@ -1,34 +1,64 @@
 import * as echarts from 'echarts';
 
 
-function yearChart() {
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('week'));
+function week() {
+    var chartDom = document.getElementById('year_pie');
+    var myChart = echarts.init(chartDom, 'dark');
+    var option;
+    window.addEventListener('resize', function () {
+        myChart.resize();
+    });
 
-    // 指定图表的配置项和数据
-    var option = {
+    option = {
         title: {
-            text: 'ECharts 入门示例'
+            text: '近一年发布信息概览'
         },
-        tooltip: {},
+        tooltip: {
+            trigger: 'item'
+        },
         legend: {
-            data: ['销量']
+            top: '5%',
+            left: 'center'
         },
-        xAxis: {
-            data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-        },
-        yAxis: {},
         series: [
             {
-                name: '销量',
-                type: 'bar',
-                data: [5, 20, 36, 10, 10, 20]
+                name: '失物招领发布数',
+                type: 'pie',
+                radius: ['40%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                    show: false,
+                    position: 'center'
+                },
+                emphasis: {
+                    label: {
+                        show: true,
+                        fontSize: 40,
+                        fontWeight: 'bold'
+                    }
+                },
+                labelLine: {
+                    show: false
+                },
+                data: [
+                    { value: 1048, name: '一月' },
+                    { value: 735, name: '二月' },
+                    { value: 580, name: '三月' },
+                    { value: 484, name: '四月' },
+                    { value: 450, name: '五月' },
+                    { value: 1048, name: '六月' },
+                    { value: 735, name: '七月' },
+                    { value: 580, name: '八月' },
+                    { value: 484, name: '九月' },
+                    { value: 770, name: '十月' },
+                    { value: 1048, name: '十一月' },
+                    { value: 240, name: '十二月' }
+                ]
             }
         ]
     };
 
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+    option && myChart.setOption(option);
 }
 
-export default yearChart
+export default week

@@ -1,52 +1,43 @@
 <template>
     <div class="lostList">
-        <el-scrollbar class="scroll">
-            <li class="title">
-                <div>招领物图片</div>
-                <div>招领物名称</div>
-                <div>拾取时间</div>
-                <div>招领物发布时间</div>
-                <div>拾取人联系方式</div>
-                <div>详情</div>
-            </li>
 
-            <template v-for="(item, index) of dataListCopy" :key="index">
-                <li class="scrollbar-demo-item">
-                    <div class="lostInfo">
-                        <img :src="hanleImg(item.foundImageUrl)">
-                    </div>
-                    <div class="lostInfo">{{ item.foundName }}</div>
-                    <div class="lostInfo">{{ item.foundTime }}</div>
-                    <div class="lostInfo">{{ item.foundPublishTime }}</div>
-                    <div class="lostInfo">{{ item.foundersContact }}</div>
-                    <div class="lostInfo">
+        <el-table :data="dataListCopy" style="width: 100%" table-layout="fixed" max-height="680">
+            <el-table-column prop="foundImageUrl" label="招领物图片" align="center">
+                <template #default="scope">
+                    <img style="width: 100%; height: 150px;" :src="hanleImg(scope.row.foundImageUrl)">
+                </template>
+            </el-table-column>
+            <el-table-column prop="foundName" label="招领物名称" align="center" />
+            <el-table-column prop="foundTime" label="拾取时间" align="center" />
+            <el-table-column prop="foundPublishTime" label="招领物发布时间" align="center" />
+            <el-table-column prop="foundersContact" label="拾取人联系方式" align="center" />
+            <el-table-column prop="publish_status" label="操作" align="center" :filters="[
+                { text: '已发布', value: 'true' },
+                { text: '未发布', value: 'false' }
+            ]" :filter-method="filterHandler">
 
-                        <div>
-                            <el-button @click="getDetails(item.foundImageUrl)">查看详情</el-button>
-                            <el-button type="danger" circle @click="handleDelete(item.id, index)">
-                                <el-icon>
-                                    <Delete />
-                                </el-icon>
-                            </el-button>
+                <template #default="scope">
 
-                            <el-tooltip :content="'是否允许发布: ' + item.publish_status" placement="top">
-                                <el-switch v-model="item.publish_status"
-                                    @click="changePublishStatus(item.publish_status, item.foundImageUrl)"
-                                    style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
-                                    active-value="true" inactive-value="false">
+                    <el-button @click="getDetails(scope.row.foundImageUrl)">查看详情</el-button>
+                    <el-button type="danger" circle @click="handleDelete(scope.row.id, scope.$index)">
+                        <el-icon>
+                            <Delete />
+                        </el-icon>
+                    </el-button>
 
-                                </el-switch>
-                            </el-tooltip>
-                        </div>
+                    <el-tooltip :content="'是否允许发布: ' + scope.row.publish_status" placement="top">
+                        <el-switch v-model="scope.row.publish_status"
+                            @click="changePublishStatus(scope.row.publish_status, scope.row.foundImageUrl)"
+                            style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949" active-value="true"
+                            inactive-value="false">
 
-                    </div>
-                </li>
-            </template>
+                        </el-switch>
+                    </el-tooltip>
 
+                </template>
 
-            <el-empty v-if="!dataList.length" description="description" />
-
-        </el-scrollbar>
+            </el-table-column>
+        </el-table>
 
         <el-dialog v-model="dialogTableVisible" title="信息详情" center width="30%">
             <div class="textHeight">
@@ -63,88 +54,12 @@
     font-size: 20px;
     text-indent: 2em; // 首行缩进
 }
-
-.lostList {
-    flex: 1; //填充剩余部分
-    background-color: #ecf5ff;
-}
-
-.scroll {
-    // 滚动组件
-    max-height: 680.4px;
-    position: relative;
-}
-
-.title {
-    // 信息标题
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 550;
-    background: var(--el-color-primary-light-9);
-    color: var(--el-color-primary);
-    padding: 10px;
-    padding-bottom: 0;
-    position: sticky; //设置粘性定位
-    top: 0;
-
-    div {
-        flex: 1;
-        text-align: center;
-        border-bottom: 1px solid black;
-        overflow: hidden;
-        /* 隐藏溢出内容 */
-        white-space: nowrap;
-        /* 不换行，防止文本溢出 */
-        text-overflow: ellipsis;
-        /* 当文本溢出时显示省略号 */
-    }
-
-    div:not(:last-child) {
-        border-right: 1px solid black;
-    }
-}
-
-.scrollbar-demo-item {
-    // 后端获取数据并展示的栏位
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    // height: 50px;
-    padding: 10px;
-    text-align: center;
-    border-radius: 4px;
-    border-bottom: 1px solid black;
-    background: var(--el-color-primary-light-9);
-    color: var(--el-color-primary);
-
-
-    .lostInfo {
-        flex: 1;
-        height: 200px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        // line-height: 200px;
-        img {
-            width: 90%;
-            height: 100%;
-        }
-    }
-
-    // .lostInfo:last-child {
-    //     flex-direction: column;
-    // }
-
-    div:not(:last-child) {
-        border-right: 1px solid black;
-    }
-}
 </style>
 
 <script>
 import axios from 'axios'
+
+import { ElMessage } from 'element-plus'
 
 export default {
     props: ['dataListCopy'],
@@ -168,7 +83,7 @@ export default {
             // }
 
             axios.post('http://localhost:3000/userDeletePublishFoundInfo', id).then(res => {
-                alert(res.data.message);
+                ElMessage.success(res.data.message);
                 this.dataListCopy.splice(index, 1);//同步移除
             }).catch(err => {
                 console.log(err.response.data.error);
@@ -191,6 +106,11 @@ export default {
             }).catch(err => {
                 console.log(err.response.data.error);
             })
+        },
+
+        filterHandler(value, row, column) {
+            const property = column['property']
+            return row[property] === value
         },
 
         hanleImg(url) {// 设置代理处理图片

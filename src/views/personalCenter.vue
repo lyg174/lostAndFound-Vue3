@@ -136,7 +136,7 @@
 
 <script>
 import axios from 'axios';
-
+import { ElMessage } from 'element-plus'
 
 
 
@@ -178,7 +178,7 @@ export default {
             const username = sessionStorage.getItem('username'); //后端查询依据
 
             if (!this.nickname || !this.realName || !this.phoneNumber || !this.value) {
-                alert('请填写完整信息！')
+                ElMessage.error('请填写完整信息！')
                 return
             } else {
                 const userInfo = {
@@ -192,9 +192,9 @@ export default {
                 console.log(userInfo);
 
                 axios.post('http://localhost:3000/changeInfo', userInfo).then(res => { //更新信息
-                    alert(res.data.message)
+                    ElMessage.success(res.data.message)
                 }).catch((err) => {
-                    alert(err.response.data.error);
+                    ElMessage.error(err.response.data.error);
                 })
 
                 this.centerDialogVisible = false;
@@ -210,7 +210,7 @@ export default {
             if (res.data.data.length) this.datalist = res.data.data;
             console.log(this.datalist);
         }).catch((err) => {
-            alert(err.response.data.error);
+            ElMessage.error(err.response.data.error);
         })
     },
 }

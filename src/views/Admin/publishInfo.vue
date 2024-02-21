@@ -134,6 +134,9 @@ a {
 import axios from 'axios'
 import uploadAvatar from '../../components/uploadAvatar.vue'
 
+
+import { ElMessage } from 'element-plus'
+
 export default {
     components: {
         uploadAvatar,
@@ -142,7 +145,7 @@ export default {
         axios.get('http://localhost:3000/getInfo').then(res => {
             this.msg = res.data.message.information;
         }).catch((err) => {
-            alert(err.response.data.error);
+            ElMessage.error(err.response.data.error);
         })
     },
     data() {
@@ -192,10 +195,10 @@ export default {
             const msg = this.msg;
 
             axios.post('http://localhost:3000/sendMsg', { msg }).then(res => {
-                alert(res.data.message);
+                ElMessage.success(res.data.message);
                 this.sendMsgDialog = false;
             }).catch((err) => {
-                alert(err.response.data.error);
+                ElMessage.error(err.response.data.error);
             })
         },
 

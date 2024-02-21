@@ -120,6 +120,8 @@ import axios from 'axios';
 import uploadAvatar from '../components/uploadAvatar.vue'
 import { ElNotification } from 'element-plus'
 
+import { ElMessage } from 'element-plus'
+
 export default {
     components: {
         uploadAvatar,
@@ -131,7 +133,7 @@ export default {
             this.msg = res.data.message;
             this.handleMsgAuto(); //第一次进入页面时触发
         }).catch((err) => {
-            alert(err.response.data.error);
+            ElMessage.error(err.response.data.error);
         })
     },
     data() {
@@ -174,7 +176,7 @@ export default {
         },
         copyArray(list) {// 接受子组件传来的数据
             this.dataList = list;
-            this.dataListCopy = this.dataList.slice();// 复制
+            this.dataListCopy = this.dataList.slice().filter(item => item.publish_status === 'true');// 复制
         },
         handleMsgAuto() {
             const controlClick = sessionStorage.getItem('controlClick');
@@ -197,7 +199,7 @@ export default {
             axios.get('http://localhost:3000/getInfo').then(res => {// 实现实时更新(类似)
                 this.msg = res.data.message;
             }).catch((err) => {
-                alert(err.response.data.error);
+                ElMessage.error(err.response.data.error);
             })
 
             const msg = this.msg.information;

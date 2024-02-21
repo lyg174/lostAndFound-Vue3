@@ -3,7 +3,7 @@
 
         <!-- 使用element plus构建功能跳转框 -->
         <el-col :span="24"> <!-- width: 100% -->
-            <el-menu default-active="0" class="el-menu-vertical-demo" background-color="#074d7c">
+            <el-menu default-active="0" class="el-menu-vertical-demo" background-color="#c6b0a7" active-text-color="#fff">
                 <el-menu-item index="0" @click="handleRouter('/list/lostlist')">
                     <el-icon><House /></el-icon>
                     <span>失物招领列表</span>
@@ -57,7 +57,7 @@
 .container {
     width: 15%;
     height: 100vh;
-    background-color: rgb(7, 77, 124);
+    background-color: #c6b0a7;
 }
 
 .el-menu {

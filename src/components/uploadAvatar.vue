@@ -12,6 +12,7 @@
 import { ElMessage } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 
+
 export default {
     data() {
         return {
@@ -24,7 +25,7 @@ export default {
 
     methods: {
         handleAvatarSuccess(res, uploadFile) {
-            alert('上传成功!');
+            ElMessage.success('上传成功!');
             sessionStorage.setItem('avatar', res.path)// 修改头像文件路径
             this.$emit('hanleSubmit');// 触发父组件事件
             this.imageUrl = URL.createObjectURL(uploadFile.raw)

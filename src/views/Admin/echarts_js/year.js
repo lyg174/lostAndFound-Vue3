@@ -1,39 +1,96 @@
 import * as echarts from 'echarts';
+import axios from 'axios';
+
+function handleData(data) {
+    // 创建一个对象来存储每个月的计数
+    const monthlyCount = new Array(12).fill(0);
+
+    // 遍历失物招领数据
+    data.forEach(item => {
+        const month = new Date(item.lostTime ? item.lostTime : item.foundTime).getMonth();
+        monthlyCount[month]++;
+    });
+
+    return monthlyCount;
+
+}
 
 
-function yearChart() {
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('year'));
+async function year() {
+    const res_01 = await axios.get('http://localhost:3000/lostlist');
+    const res_02 = await axios.get('http://localhost:3000/foundlist');
+    const data_01 = handleData(res_01.data.data);
+    const data_02 = handleData(res_02.data.data);
+    console.log(data_01, data_02);
 
-    myChart.on('click', function(params) {
-        // 控制台打印数据的名称
-        console.log(params);
-      });
 
-    // 指定图表的配置项和数据
-    var option = {
+    var chartDom = document.getElementById('year_line');
+    var myChart = echarts.init(chartDom, 'dark');
+    var option;
+    window.addEventListener('resize', function () {
+        myChart.resize();
+    });
+
+    option = {
         title: {
-            text: 'ECharts 入门示例'
+            text: '近一年'
         },
-        tooltip: {},
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
         legend: {
-            data: ['销量']
+            data: ['已发布的失物', '已发布的招领物']
         },
-        xAxis: {
-            data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
         },
-        yAxis: {},
+        xAxis: [
+            {
+                type: 'category',
+                boundaryGap: false,
+                data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value'
+            }
+        ],
         series: [
             {
-                name: '销量',
-                type: 'bar',
-                data: [5, 20, 36, 10, 10, 20]
+                name: '已发布的失物',
+                type: 'line',
+                stack: 'Total',
+                areaStyle: {},
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [120, 132, 101, 134, 90, 230, 210, 230, 120, 132, 101, 134]
+            },
+            {
+                name: '已发布的招领物',
+                type: 'line',
+                stack: 'Total',
+                areaStyle: {},
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [550, 532, 501, 534, 590, 530, 510, 530, 550, 532, 501, 534]
             }
         ]
     };
 
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+    option && myChart.setOption(option);
 }
 
-export default yearChart
+export default year
+

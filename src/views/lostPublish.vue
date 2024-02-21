@@ -1,51 +1,12 @@
 <template>
     <div class="found">
-        <el-scrollbar class="scroll">
-            <li class="title">
-                <div>失物名称</div>
-                <div>失物描述</div>
-                <div>丢失时间</div>
-                <div>失物发布时间</div>
-                <div>我的联系方式</div>
-                <div>删除</div>
-            </li>
+        <el-card class="box-card01">
 
-
-            <template v-for="(item, index) of dataList" :key="index">
-                <li class="scrollbar-demo-item">
-                    <div class="lostInfo">
-                        <img :src="hanleImg(item.lostImageUrl)">
-                    </div>
-                    <div class="lostInfo">{{ item.lostName }}</div>
-                    <div class="lostInfo">{{ item.lostTime }}</div>·
-                    <div class="lostInfo">{{ item.lostPublishTime }}</div>
-                    <div class="lostInfo">{{ item.losersContact }}</div>
-                    <div class="lostInfo">
-
-                        <el-button @click="handleDelete(item.id, index)" type="danger" circle>
-                            <el-icon>
-                                <Delete />
-                            </el-icon>
-                        </el-button>
-
-                    </div>
-                </li>
+            <template #header>
+                <div class="card-header">
+                    <h3>失物发布页面</h3>
+                </div>
             </template>
-
-            <el-empty v-if="!dataList.length" description="description" />
-
-
-            <!-- 发布信息按钮 -->
-            <el-button class="publish" type="primary" circle @click="centerDialogVisible = true">
-                <el-icon>
-                    <Promotion />
-                </el-icon>
-            </el-button>
-
-        </el-scrollbar>
-
-        <!-- 招领物信息编辑对话框 -->
-        <el-dialog v-model="centerDialogVisible" title="编辑失物信息" width="30%" align-center center>
 
             <el-form ref="ruleFormRef" label-position="right" label-width="100px" style="max-width: 460px">
                 <el-form-item label="失物图片:">
@@ -74,16 +35,42 @@
                 </el-form-item>
             </el-form>
 
-            <template #footer>
-                <span class="dialog-footer">
-                    <el-button @click="centerDialogVisible = false">取消</el-button>
-                    <el-button type="primary" @click="handlePublish">
-                        发布
-                    </el-button>
-                </span>
-            </template>
-        </el-dialog>
+            <el-button type="primary" @click="handlePublish">
+                发布
+            </el-button>
 
+        </el-card>
+
+        <el-card class="box-card01">
+
+            <template #header>
+                <div class="card-header">
+                    <h3>我发布的失物</h3>
+                </div>
+            </template>
+
+            <el-table :data="dataList" style="width: 100%" table-layout="fixed" max-height="550">
+                <el-table-column prop="lostImageUrl" label="失物图片" align="center">
+                    <template #default="scope">
+                        <img style="width: 100%; height: 150px;" :src="hanleImg(scope.row.lostImageUrl)">
+                    </template>
+                </el-table-column>
+                <el-table-column prop="lostName" label="失物名称" align="center" />
+                <el-table-column prop="lostTime" label="丢失时间" align="center" />
+                <el-table-column prop="address" label="删除" align="center">
+
+                    <template #default="scope">
+                        <el-button @click="handleDelete(scope.row.id, scope.$index)" type="danger" circle>
+                            <el-icon>
+                                <Delete />
+                            </el-icon>
+                        </el-button>
+                    </template>
+
+                </el-table-column>
+            </el-table>
+
+        </el-card>
     </div>
 </template>
 
@@ -91,84 +78,16 @@
 .found {
     // width: 100%;
     flex: 1;
-    background-color: skyblue;
+    background-color: #545c64;
     // background-image: url('../image/bg.jpg');
     // background-size: cover;
-}
-
-.title {
-    // 信息标题
     display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 550;
-    background: var(--el-color-primary-light-9);
-    color: var(--el-color-primary);
-    padding: 10px;
-    padding-bottom: 0;
-    position: sticky; //设置粘性定位
-    top: 0;
 
-    div {
-        flex: 1;
+    .box-card01 {
+        margin: 30px auto;
+        width: 45%;
+        height: 90%;
         text-align: center;
-        border-bottom: 1px solid black;
-        overflow: hidden;
-        /* 隐藏溢出内容 */
-        white-space: nowrap;
-        /* 不换行，防止文本溢出 */
-        text-overflow: ellipsis;
-        /* 当文本溢出时显示省略号 */
-    }
-
-    div:not(:last-child) {
-        border-right: 1px solid black;
-    }
-}
-
-.scroll {
-    // 滚动组件
-    max-height: 750.4px;
-    position: relative;
-
-    .publish {
-        position: absolute;
-        bottom: 100px;
-        right: 10px;
-    }
-}
-
-.scrollbar-demo-item {
-    // 后端获取数据并展示的栏位
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    // height: 50px;
-    padding: 10px;
-    text-align: center;
-    border-radius: 4px;
-    border-bottom: 1px solid black;
-    background: var(--el-color-primary-light-9);
-    color: var(--el-color-primary);
-
-
-
-    .lostInfo {
-        flex: 1;
-        height: 200px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        // line-height: 200px;
-        img {
-            width: 90%;
-            height: 100%;
-        }
-    }
-
-    div:not(:last-child) {
-        border-right: 1px solid black;
     }
 }
 </style>
@@ -176,6 +95,7 @@
 <script>
 import axios from 'axios';
 import uploadImage from '../components/uploadImage.vue'
+import { ElMessage } from 'element-plus'
 
 export default {
     provide() {
@@ -202,11 +122,11 @@ export default {
     methods: {
         handleDelete(id, index) {// 删除发布信息
             // const imgUrl = { 'url': url };//后端可根据url删除特定信息
-            axios.post('http://localhost:3000/userDeletePublishLostInfo', {id}).then(res => {
-                alert(res.data.message);
+            axios.post('http://localhost:3000/userDeletePublishLostInfo', { id }).then(res => {
+                ElMessage.success(res.data.message);
                 this.dataList.splice(index, 1);//同步移除
             }).catch((err) => {
-                alert(err.response.data.error);
+                ElMessage.error(err.response.data.error);
             })
         },
         hanleImg(url) {// 设置代理处理图片
@@ -223,7 +143,7 @@ export default {
                 this.publishInfo.lostTime = this.publishInfo.lostTime.toLocaleDateString('en-CA');// 传化成普通日期字符串格式，例如：2020-05-25
                 this.publishInfo.lostPublishTime = this.publishInfo.lostPublishTime.toLocaleDateString('en-CA');
             } else {
-                alert('时间不可为空！');
+                ElMessage.error('时间不可为空！');
                 return;
             }
 
@@ -233,7 +153,7 @@ export default {
 
             for (let item in publishInfo) {// 判断相关内容是否为空
                 if (!publishInfo[item]) {
-                    alert('请填写完整信息');
+                    ElMessage.error('请填写完整信息');
                     return;
                 }
             }

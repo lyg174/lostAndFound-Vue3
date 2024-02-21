@@ -1,89 +1,121 @@
 <template>
     <div class="usersManager">
 
-        <el-scrollbar class="scroll">
-            <li class="title">
-                <div>用户名</div>
-                <div>用户密码</div>
-                <div>用户昵称</div>
-                <div>用户头像</div>
-                <div>删除账户</div>
-            </li>
+        <el-card class="box-card01">
 
-            <template v-for="(item, index) of datalist" :key="index">
-                <li class="scrollbar-demo-item">
-                    <div class="lostInfo">{{ item.username }}</div>
-                    <div class="lostInfo">{{ item.password }}</div>
-                    <div class="lostInfo">{{ item.nickname }}</div>
-                    <div class="lostInfo">
-                        <img :src="hanleImg(item.avatar)" />
-                    </div>
-                    <div class="lostInfo">
-
-                        <div>
-                            <el-button v-if="item.username !== 'admin'" @click="handleWrite(item.username)" type="primary">
-                                编辑
-                            </el-button>
-
-                            <el-button @click="handleDelete(item.username, index)" type="danger" circle>
-                                <el-icon>
-                                    <Delete />
-                                </el-icon>
-                            </el-button>
-
-                            <br>
-
-                            <el-tooltip v-if="item.username !== 'admin'" :content="'允许登录: ' + item.login_status"
-                                placement="top">
-                                <el-switch v-model="item.login_status"
-                                    @click="changeLoginStatus(item.login_status, item.username)"
-                                    style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
-                                    active-value="true" inactive-value="false">
-
-                                </el-switch>
-                            </el-tooltip>
-                        </div>
-
-                    </div>
-                </li>
+            <template #header>
+                <div class="card-header">
+                    <h3>添加用户</h3>
+                </div>
             </template>
 
-            <!-- 对话框 -->
-            <el-dialog v-model="centerDialogVisible" title="编辑用户资料" width="30%" align-center :center="true">
+            <el-form ref="ruleFormRef" label-position="right" label-width="100px" style="max-width: 460px">
+                <el-form-item label="用户名:">
+                    <el-input v-model="userRegisterInfo.username" />
+                </el-form-item>
+                <el-form-item label="密码:">
+                    <el-input v-model="userRegisterInfo.password" />
+                </el-form-item>
+                <el-form-item label="昵称:">
+                    <el-input v-model="userRegisterInfo.nickname" />
+                </el-form-item>
+                <el-form-item label="真实姓名:">
+                    <el-input v-model="userRegisterInfo.realName" />
+                </el-form-item>
+                <el-form-item label="性别:">
+                    <el-select v-model="userRegisterInfo.gender" class="m-2" placeholder="Select" size="default">
+                        <el-option v-for="item of options" :key="item.value" :value="item.value" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="电话号码:">
+                    <el-input v-model.number="userRegisterInfo.phoneNumber" />
+                </el-form-item>
+            </el-form>
 
-                <!-- element plus表单，用于提交用户修改数据 -->
-                <el-form ref="ruleFormRef" label-position="right" label-width="100px" style="max-width: 460px">
-                    <el-form-item label="昵称:">
-                        <el-input v-model="usersInfo.nickname" />
-                    </el-form-item>
-                    <el-form-item label="真实姓名:">
-                        <el-input v-model="usersInfo.realName" />
-                    </el-form-item>
-                    <el-form-item label="性别:">
-                        <el-select v-model="usersInfo.gender" class="m-2" placeholder="Select" size="default">
-                            <el-option v-for="item of options" :key="item.value" :value="item.value" />
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="电话号码:">
-                        <el-input v-model.number="usersInfo.phoneNumber" />
-                    </el-form-item>
-                </el-form>
+            <el-button type="primary" @click="addUser">
+                添加
+            </el-button>
 
-                <template #footer>
-                    <span class="dialog-footer">
-                        <el-button @click="centerDialogVisible = false">取消</el-button>
-                        <el-button type="primary" @click="changeInfo">
-                            确认
+        </el-card>
+
+        <el-card class="box-card02">
+
+            <template #header>
+                <div class="card-header">
+                    <h3>用户列表</h3>
+                </div>
+            </template>
+
+            <el-table :data="datalist" style="width: 100%" table-layout="fixed" max-height="550">
+                <el-table-column prop="avatar" label="用户头像" align="center">
+                    <template #default="scope">
+                        <el-avatar :size="50" :src="hanleImg(scope.row.avatar)" />
+                    </template>
+                </el-table-column>
+                <el-table-column prop="username" label="用户名" align="center" />
+                <el-table-column prop="nickname" label="昵称" align="center" />
+                <el-table-column prop="address" label="操作" align="center">
+
+                    <template #default="scope">
+
+                        <el-button v-if="scope.row.username !== 'admin'" @click="handleWrite(scope.row.username)"
+                            type="primary">
+                            编辑
                         </el-button>
-                    </span>
-                </template>
-            </el-dialog>
 
-            <el-empty v-if="false" description="description" />
+                        <el-button @click="handleDelete(scope.row.username, scope.$index)" type="danger" circle>
+                            <el-icon>
+                                <Delete />
+                            </el-icon>
+                        </el-button>
 
+                        <el-tooltip v-if="scope.row.username !== 'admin'" :content="'允许登录: ' + scope.row.login_status"
+                            placement="top">
+                            <el-switch v-model="scope.row.login_status"
+                                @click="changeLoginStatus(scope.row.login_status, scope.row.username)"
+                                style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949" active-value="true"
+                                inactive-value="false">
 
-        </el-scrollbar>
+                            </el-switch>
+                        </el-tooltip>
 
+                    </template>
+
+                </el-table-column>
+            </el-table>
+
+        </el-card>
+
+        <!-- 对话框 -->
+        <el-dialog v-model="centerDialogVisible" title="编辑用户资料" width="30%" align-center :center="true">
+
+            <!-- element plus表单，用于提交用户修改数据 -->
+            <el-form ref="ruleFormRef" label-position="right" label-width="100px" style="max-width: 460px">
+                <el-form-item label="昵称:">
+                    <el-input v-model="usersInfo.nickname" />
+                </el-form-item>
+                <el-form-item label="真实姓名:">
+                    <el-input v-model="usersInfo.realName" />
+                </el-form-item>
+                <el-form-item label="性别:">
+                    <el-select v-model="usersInfo.gender" class="m-2" placeholder="Select" size="default">
+                        <el-option v-for="item of options" :key="item.value" :value="item.value" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="电话号码:">
+                    <el-input v-model.number="usersInfo.phoneNumber" />
+                </el-form-item>
+            </el-form>
+
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="centerDialogVisible = false">取消</el-button>
+                    <el-button type="primary" @click="changeInfo">
+                        确认
+                    </el-button>
+                </span>
+            </template>
+        </el-dialog>
     </div>
 </template>
 
@@ -92,83 +124,19 @@
     flex: 1;
     // width: 100%;
     // height: 100%;
-    background-color: skyblue;
-}
-
-.title {
-    // 信息标题
+    background-color: #545c64;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 550;
-    background: var(--el-color-primary-light-9);
-    color: var(--el-color-primary);
-    padding: 10px;
-    padding-bottom: 0;
-    position: sticky; //设置粘性定位
-    top: 0;
 
-    div {
-        flex: 1;
+    .box-card01,
+    .box-card02 {
+        margin: 30px auto;
+        width: 60%;
+        height: 90%;
         text-align: center;
-        border-bottom: 1px solid black;
-        overflow: hidden;
-        /* 隐藏溢出内容 */
-        white-space: nowrap;
-        /* 不换行，防止文本溢出 */
-        text-overflow: ellipsis;
-        /* 当文本溢出时显示省略号 */
     }
 
-    div:not(:last-child) {
-        border-right: 1px solid black;
-    }
-}
-
-.scroll {
-    // 滚动组件
-    max-height: 750.4px;
-    position: relative;
-
-    .publish {
-        position: absolute;
-        bottom: 100px;
-        right: 10px;
-    }
-}
-
-.scrollbar-demo-item {
-    // 后端获取数据并展示的栏位
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    // height: 50px;
-    padding: 10px;
-    text-align: center;
-    border-radius: 4px;
-    border-bottom: 1px solid black;
-    background: var(--el-color-primary-light-9);
-    color: var(--el-color-primary);
-
-
-
-    .lostInfo {
-        flex: 1;
-        height: 200px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        // line-height: 200px;
-        img {
-            width: 90%;
-            height: 100%;
-        }
-    }
-
-    div:not(:last-child) {
-
-        border-right: 1px solid black;
+    .box-card01 {
+        width: 35%;
     }
 }
 </style>
@@ -176,11 +144,22 @@
 <script>
 import axios from 'axios'
 
+import { ElMessage } from 'element-plus'
+
+
 export default {
     data() {
         return {
             datalist: [],
             usersInfo: [],
+            userRegisterInfo: {
+                username: '',
+                password: '',
+                nickname: '',
+                realName: '',
+                gender: '',
+                phoneNumber: '',
+            },
             options: [
                 {
                     value: '男'
@@ -196,7 +175,7 @@ export default {
     methods: {
         handleDelete(username, index) {
             if (username === 'admin') {
-                alert('不可删除!!');
+                ElMessage.error('不可删除!!');
                 return;
             }
 
@@ -205,10 +184,10 @@ export default {
             }
 
             axios.post('http://localhost:3000/delUsersAccountInfo', userInfo).then(res => {
-                alert(res.data.message);
+                ElMessage.success(res.data.message);
                 this.datalist.splice(index, 1);//同步移除
             }).catch((err) => {
-                alert(err.response.data.error);
+                ElMessage.error(err.response.data.error);
             })
         },
         handleWrite(username) {// 编辑用户资料
@@ -218,24 +197,24 @@ export default {
                 if (res.data.data.length) this.usersInfo = res.data.data[0];
                 console.log(this.usersInfo);
             }).catch((err) => {
-                alert(err.response.data.error);
+                ElMessage.error(err.response.data.error);
             })
 
         },
         changeInfo() {
 
             const userInfo = {
-                    nickname: this.usersInfo.nickname,
-                    realName: this.usersInfo.realName,
-                    gender: this.usersInfo.gender,
-                    phoneNumber: this.usersInfo.phoneNumber,
-                    username: this.usersInfo.username
-                }
+                nickname: this.usersInfo.nickname,
+                realName: this.usersInfo.realName,
+                gender: this.usersInfo.gender,
+                phoneNumber: this.usersInfo.phoneNumber,
+                username: this.usersInfo.username
+            }
 
             axios.post('http://localhost:3000/changeInfo', userInfo).then(res => { //更新信息
-                alert(res.data.message)
+                ElMessage.success(res.data.message)
             }).catch((err) => {
-                alert(err.response.data.error);
+                ElMessage.error(err.response.data.error);
             })
 
             this.centerDialogVisible = false;
@@ -249,8 +228,24 @@ export default {
             axios.post('http://localhost:3000/changeUsersLoginStatus', info).then(res => {
                 console.log(res.data.message);
             }).catch((err) => {
-                alert(err.response.data.error);
+                ElMessage.error(err.response.data.error);
             })
+        },
+        async addUser() {
+            const res = await axios.post('http://localhost:3000/register', { username: this.userRegisterInfo.username, password: this.userRegisterInfo.password });
+            if (res.data.message === '注册成功') {
+                axios.post('http://localhost:3000/changeInfo', {
+                    nickname: this.userRegisterInfo.nickname,
+                    realName: this.userRegisterInfo.realName,
+                    phoneNumber: this.userRegisterInfo.phoneNumber,
+                    gender: this.userRegisterInfo.gender,
+                    username: this.userRegisterInfo.username
+                }).then(res => { //更新信息
+                    ElMessage.success('添加成功')
+                }).catch((err) => {
+                    ElMessage.error(err.response.data.error);
+                })
+            }
         },
         hanleImg(url) {// 设置代理处理图片
             if (url === null) {// 用户未设置头像时采用默认头像
@@ -275,7 +270,7 @@ export default {
             this.datalist = res.data.data;
             console.log(this.datalist);
         }).catch(err => {
-            alert(err.response.data.error);
+            ElMessage.error(err.response.data.error);
         })
     },
 }

@@ -1,21 +1,37 @@
 <template>
     <div class="container">
-        <div class="content">
-            <form class="register">
-                <p class="title">注册界面</p>
-                <el-button class="btnBack" type='primary' round @click="handleBack"><el-icon>
-                        <ArrowLeft />
-                    </el-icon></el-button>
-                <el-input class="info" v-model="user" placeholder="请输入账号:" />
-                <el-input class="info" v-model="psw1" type="password" placeholder="请输入密码:" show-password />
-                <el-input class="info" v-model="psw2" type="password" placeholder="确认密码:" show-password />
-                <el-button class="btn" type="primary" round @click="handleRegister">注册</el-button>
-            </form>
-        </div>
+        <el-card class="box-card">
+            <template #header>
+                <div class="card-header" style="border: none;">
+                    <h3>校园失物招领注册页</h3>
+                </div>
+            </template>
+            <div class="login">
+                <div style="flex: 1;"></div>
+
+                <el-form :model="form" label-width="120px" size="large">
+                    <el-form-item label="请输入用户名:">
+                        <el-input v-model="user" />
+                    </el-form-item>
+                    <el-form-item label="请输入密码:">
+                        <el-input v-model="psw1" type="password" />
+                    </el-form-item>
+                    <el-form-item label="确认密码:">
+                        <el-input v-model="psw2" type="password" />
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" round @click="handleBack">返回</el-button>
+                        <el-button type="primary" round @click="handleRegister">注册</el-button>
+                    </el-form-item>
+
+                </el-form>
+            </div>
+
+        </el-card>
     </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .container {
     width: 100vw;
     height: 100vh;
@@ -24,43 +40,47 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
 
-.content {
-    width: 550px;
-    height: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* background: linear-gradient(45deg, #5c32bf 0%, #196073 50%, #26dc69 100%); */
-    background-color: rgb(234, 100, 6, 0.4);
-}
+    .box-card {
+        border: none;
+        width: 700px;
+        height: 400px;
+        background-image: url('../assets/login.jpg');
+        background-size: cover;
+        border-radius: 10px;
 
-.register {
-    text-align: center;
-    position: relative;
-}
+        :deep(.el-card__header) {
+            border: none;
+        }
 
-.title {
-    font-size: 25px;
-    font-weight: 900;
-}
+        .login {
+            display: flex;
 
-.btnBack {
-    /* background-color: transparent; */
-    border-color: transparent;
-    position: absolute;
-    top: 0px;
-    left: 0;
-}
+            .el-form {
+                height: 300px;
+                flex: 3;
+                font-weight: 700;
+                background-color: rgb(255, 255, 255, 0.3);
 
-.info {
-    margin: 5px 0;
+                .el-form-item {
+                    margin: 0;
+                    padding: 10px;
+
+                    &:nth-of-type(1) {
+                        margin-top: 30px;
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
+    }
+
 }
 </style>
 
 <script>
 import axios from 'axios';
+import { ElMessage } from 'element-plus'
 
 export default {
     data() {
@@ -73,11 +93,11 @@ export default {
     methods: {
         handleRegister() {
             if (this.psw1 === '' && this.psw2 === '') {
-                alert('密码不能为空!!')
+                ElMessage.error('密码不能为空!!')
                 return;
             };
             if (this.psw1 !== this.psw2) {
-                alert('两次输入密码不一致！！')
+                ElMessage.error('两次输入密码不一致！！')
                 return;
             };
             const registerMsg = {
@@ -85,12 +105,13 @@ export default {
                 password: this.psw1
             };
             axios.post('http://localhost:3000/register', registerMsg).then(res => {
-                alert(res.data.message);
+                ElMessage.success(res.data.message);
                 setTimeout(() => {
                     this.$emit('isRegister', true)
                 }, 1500);
+                this.$router.push('/login');
             }).catch((err) => {
-                alert(err.response.data.error);
+                ElMessage.error(err.response.data.error);
             })
         },
         handleBack() {

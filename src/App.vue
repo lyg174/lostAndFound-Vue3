@@ -79,7 +79,7 @@ export default {
   align-items: center;
   width: 100%;
   height: 100%;
-  background-image: url("./image/t016c596b57d460fecf.jpg");
+  background-image: url(".//assets/bg.jpg");
   background-size: cover;
   /* background: linear-gradient(45deg, #db0e97 0%, #0a67bf 50%, #0ae6a4 100%); */
 }
@@ -99,7 +99,8 @@ export default {
 
 .app {
   display: flex;
-  width: 70%;
+  width: 100%;
   /* height: 0; */
+  
 }
 </style>

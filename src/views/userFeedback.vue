@@ -1,46 +1,13 @@
 <template>
     <div class="feedback">
-        <el-scrollbar class="scroll">
-            <li class="title">
-                <div>反馈时间</div>
-                <div>联系电话</div>
-                <div>电子邮箱</div>
-                <div>建议</div>
-                <div>删除</div>
-            </li>
 
-            <template v-for="(item, index) of datalist" :key="index">
-                <li class="scrollbar-demo-item">
-                    <div class="lostInfo">{{ item.feedTime }}</div>
-                    <div class="lostInfo">{{ item.phoneNumber }}</div>·
-                    <div class="lostInfo">{{ item.email }}</div>
-                    <div class="lostInfo">{{ item.suggestion }}</div>
-                    <div class="lostInfo">
+        <el-card class="box-card01">
 
-                        <el-button @click="handleDelete(item.suggestion, index)" type="danger" circle>
-                            <el-icon>
-                                <Delete />
-                            </el-icon>
-                        </el-button>
-
-                    </div>
-                </li>
+            <template #header>
+                <div class="card-header">
+                    <h3>反馈页面</h3>
+                </div>
             </template>
-
-            <el-empty v-if="!datalist.length" description="description" />
-
-
-            <!-- 发布信息按钮 -->
-            <el-button class="publish" type="primary" circle @click="centerDialogVisible = true">
-                <el-icon>
-                    <Promotion />
-                </el-icon>
-            </el-button>
-        </el-scrollbar>
-
-
-        <!-- 建议反馈对话框 -->
-        <el-dialog v-model="centerDialogVisible" title="建议反馈" width="30%" align-center center>
 
             <el-form ref="ruleFormRef" label-position="right" label-width="100px" style="max-width: 460px">
                 <el-form-item label="姓名:">
@@ -65,99 +32,52 @@
                 </el-form-item>
             </el-form>
 
-            <template #footer>
-                <span class="dialog-footer">
-                    <el-button @click="centerDialogVisible = false">取消</el-button>
-                    <el-button type="primary" @click="handleFeedback">
-                        发送
-                    </el-button>
-                </span>
+            <el-button type="primary" @click="handleFeedback">
+                发布
+            </el-button>
+
+        </el-card>
+
+        <el-card class="box-card01">
+
+            <template #header>
+                <div class="card-header">
+                    <h3>我的反馈</h3>
+                </div>
             </template>
 
-        </el-dialog>
+            <el-table :data="datalist" style="width: 100%" table-layout="fixed" max-height="550">
+                <el-table-column prop="suggestion" label="建议" />
+                <el-table-column prop="feedTime" label="反馈时间" />
+                <el-table-column prop="address" label="删除">
+
+                    <template #default="scope">
+                        <el-button @click="handleDelete(scope.row.suggestion, scope.$index)" type="danger" circle>
+                            <el-icon>
+                                <Delete />
+                            </el-icon>
+                        </el-button>
+                    </template>
+
+                </el-table-column>
+            </el-table>
+
+        </el-card>
+
     </div>
 </template>
 
 <style lang="scss" scoped>
 .feedback {
     flex: 1;
-    background-color: skyblue;
-}
-
-.title {
-    // 信息标题
+    background-color: #545c64;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 550;
-    background: var(--el-color-primary-light-9);
-    color: var(--el-color-primary);
-    padding: 10px;
-    padding-bottom: 0;
-    position: sticky; //设置粘性定位
-    top: 0;
 
-    div {
-        flex: 1;
+    .box-card01 {
+        margin: 30px auto;
+        width: 45%;
+        height: 90%;
         text-align: center;
-        border-bottom: 1px solid black;
-        overflow: hidden;
-        /* 隐藏溢出内容 */
-        white-space: nowrap;
-        /* 不换行，防止文本溢出 */
-        text-overflow: ellipsis;
-        /* 当文本溢出时显示省略号 */
-    }
-
-    div:not(:last-child) {
-        border-right: 1px solid black;
-    }
-}
-
-.scroll {
-    // 滚动组件
-    max-height: 750.4px;
-    position: relative;
-
-    .publish {
-        position: absolute;
-        bottom: 100px;
-        right: 10px;
-    }
-}
-
-.scrollbar-demo-item {
-    // 后端获取数据并展示的栏位
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    // height: 50px;
-    padding: 10px;
-    text-align: center;
-    border-radius: 4px;
-    border-bottom: 1px solid black;
-    background: var(--el-color-primary-light-9);
-    color: var(--el-color-primary);
-
-
-
-    .lostInfo {
-        flex: 1;
-        height: 100px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        text-overflow: ellipsis;
-        /* 当文本溢出时显示省略号 */
-        overflow: auto;
-        /* 隐藏溢出内容 */
-
-        // line-height: 200px;
-    }
-
-    div:not(:last-child) {
-        border-right: 1px solid black;
     }
 }
 </style>
@@ -165,10 +85,11 @@
 <script>
 import axios from 'axios';
 
+import { ElMessage } from 'element-plus'
+
 export default {
     data() {
         return {
-            centerDialogVisible: false,
             datalist: [],
             options: [
                 {
@@ -190,9 +111,7 @@ export default {
     },
     methods: {
         handleFeedback() {
-            setTimeout(() => {
-                this.centerDialogVisible = false;
-            }, 1000);
+            
 
             const userFeedbackInfo = this.userFeedback;
 
@@ -204,25 +123,25 @@ export default {
 
             for (let item in userFeedbackInfo) {// 判断相关内容是否为空
                 if (!userFeedbackInfo[item]) {
-                    alert('请填写完整信息');
+                    ElMessage.error('请填写完整信息');
                     return;
                 }
             }
 
             axios.post('http://localhost:3000/userPublishFeedbackInfo', userFeedbackInfo).then(res => {
-                alert(res.data.message);
+                ElMessage.success(res.data.message);
             }).catch((err) => {
-                alert(err.response.data.error);
+                ElMessage.error(err.response.data.error);
             })
 
 
         },
         handleDelete(suggestion, index) {
             axios.post('http://localhost:3000/userDeleteFeedbackInfo', { suggestion }).then(res => {
-                alert(res.data.message);
+                ElMessage.success(res.data.message);
                 this.datalist.splice(index, 1);//同步移除
             }).catch((err) => {
-                alert(err.response.data.error);
+                ElMessage.error(err.response.data.error);
                 console.log(err.response.data.error);
             })
 
@@ -233,7 +152,7 @@ export default {
         axios.post('http://localhost:3000/userFeedbackInfo', { username }).then(res => {
             this.datalist = res.data.data;
         }).catch((err) => {
-            alert(err.response.data.error);
+            ElMessage.error(err.response.data.error);
         })
     }
 }

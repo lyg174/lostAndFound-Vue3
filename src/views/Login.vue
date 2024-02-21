@@ -1,23 +1,86 @@
 <template>
   <div class="container">
-    <div class="content">
-      <form action="" class="login" v-if="isLogin">
-        <p class="title">校园失物招领系统登录页</p>
-        <el-input class="info" v-model="user" placeholder="账号:" />
-        <el-input class="info" v-model="psw" type="password" placeholder="密码:" show-password />
-        <router-link to="/register" class="left">注册</router-link>
-        <el-button class="btn" type="primary" round @click="handleLogin">登录</el-button>
-        <router-link to="/lostPassword" class="right">忘记密码?</router-link>
-      </form>
 
-    </div>
+    <el-row style="width: 55%;">
+      <el-col class="side" :span="16" style="background-color: white;">
+      </el-col>
+      <el-col :span="8" style="background-color: rgb(255, 255, 255,0.5);">
+        <div class="login">
+
+          <h3 style="text-align: center; padding-top: 10px;">校园失物招领登录页</h3>
+
+          <el-form label-width="60px" size="large">
+            <el-form-item label="用户名:">
+              <el-input v-model="user" />
+            </el-form-item>
+            <el-form-item label="密码:">
+              <el-input v-model="psw" type="password" />
+            </el-form-item>
+            <el-form-item>
+              <el-button color="black" round @click="handleLogin" style="width: 100%;">登录</el-button>
+            </el-form-item>
+            <el-form-item>
+              <el-button color="black" round @click="$router.push('/register')">注册</el-button>
+              <el-button color="black" round @click="$router.push('/lostPassword')">忘记密码？</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-col>
+    </el-row>
+
+
   </div>
 </template>
   
-<style src="../style/Login.css" scoped></style>
+<style scoped lang="scss">
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  :deep(.el-col) {
+    border-radius: 15px;
+    box-shadow: 0 0 5px 1px rgb(101, 179, 194);
+  }
+
+  .side {
+    border: none;
+    width: 100%;
+    height: 400px;
+    background-image: url('../assets/login.jpg');
+    background-size: cover;
+  }
+
+  .login {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .el-form {
+      flex: 1;
+      font-weight: 700;
+
+      .el-form-item {
+        margin: 0;
+        padding: 10px;
+
+        &:nth-of-type(1) {
+          margin-top: 70px;
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+</style>
   
 <script>
 import axios from 'axios'
+
+import { ElMessage } from 'element-plus'
+
 
 export default {
 
@@ -31,7 +94,7 @@ export default {
   methods: {
     handleLogin() {
       if (this.user === '' || this.psw === '') {
-        alert('请输入账号密码！')
+        ElMessage.error('请输入账号密码！')
         return;
       };
       const userMsg = {
@@ -40,7 +103,7 @@ export default {
       };
 
       axios.post('http://localhost:3000/login', userMsg).then(res => {
-        alert('登录成功');
+        ElMessage.success('登录成功');
         console.log(res.data);
         const datalist = res.data.data[0];
         // this.$emit('changeView', true, this.user)
@@ -63,7 +126,7 @@ export default {
         };
 
       }).catch((err) => {
-        alert(err.response.data.error);
+        ElMessage.error(err.response.data.error);
       })
     }
   },
