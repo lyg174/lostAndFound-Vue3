@@ -34,11 +34,11 @@ export default {
         this.username = user;
       }
     },
-    toList() {// 登录成功后在当前界面浏览器刷新，重定向到'/list/lostlist',若为管理员，则定向到'/publishinfo/lostinfo'
+    toList() {// 登录成功后在当前界面浏览器刷新，重定向到'/home',若为管理员，则定向到'/home'
       let loginStatus = sessionStorage.getItem('loginStatus')
       if (loginStatus === 'true' && (this.loginView === true || this.adminView === true) && this.username !== '') {
-        if (this.username != 'admin') this.$router.push('/list/lostlist');
-        else this.$router.push('/publishinfo/lostinfo');
+        if (this.username != 'admin') this.$router.push('/home');
+        else this.$router.push('/home');
       }
 
     },

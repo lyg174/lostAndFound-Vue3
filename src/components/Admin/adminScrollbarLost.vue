@@ -19,7 +19,7 @@
                 <template #default="scope">
 
                     <el-button @click="getDetails(scope.row.lostImageUrl)">查看详情</el-button>
-                    <el-button type="danger" circle @click="handleDelete(scope.row.id, scope.$index)">
+                    <el-button type="danger" circle @click="handleDialog(scope.row.id, scope.$index)">
                         <el-icon>
                             <Delete />
                         </el-icon>
@@ -45,6 +45,19 @@
             </div>
         </el-dialog>
 
+        <!-- 消息弹出框 -->
+        <el-dialog v-model="dialogVisible" title="Tips" width="30%" center align-center>
+            <span>是否删除？</span>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="dialogVisible = false">取消</el-button>
+                    <el-button type="primary" @click="handleDelete" dialogVisible>
+                        确认
+                    </el-button>
+                </span>
+            </template>
+        </el-dialog>
+
     </div>
 </template>
 
@@ -68,6 +81,9 @@ export default {
         return {
             dialogTableVisible: false,
             dataList: [],
+            dialogVisible: false,
+            id: '',// 失物ID
+            index: '',// 失物索引
         }
     },
     mounted() {
@@ -79,15 +95,17 @@ export default {
     },
 
     methods: {
-        handleDelete(id, index) {
+        handleDelete() {
             // const imageUrl = {
             //     'url': url
             // }
+            const [id, index] = [this.id, this.index]
             console.log(id, index);
 
             axios.post('http://localhost:3000/userDeletePublishLostInfo', { id }).then(res => {
                 ElMessage.success(res.data.message);
                 this.dataListCopy.splice(index, 1);//同步移除
+                this.dialogVisible = false
             }).catch(err => {
                 console.log(err.response.data.error);
             })
@@ -113,6 +131,11 @@ export default {
         filterHandler(value, row, column) {
             const property = column['property']
             return row[property] === value
+        },
+        handleDialog(id, index) {
+            this.dialogVisible = true
+            this.id = id
+            this.index = index
         },
 
         hanleImg(url) {// 设置代理处理图片

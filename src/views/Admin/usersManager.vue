@@ -63,7 +63,7 @@
                             编辑
                         </el-button>
 
-                        <el-button @click="handleDelete(scope.row.username, scope.$index)" type="danger" circle>
+                        <el-button @click="handleDialog(scope.row.username, scope.$index)" type="danger" circle>
                             <el-icon>
                                 <Delete />
                             </el-icon>
@@ -91,6 +91,12 @@
 
             <!-- element plus表单，用于提交用户修改数据 -->
             <el-form ref="ruleFormRef" label-position="right" label-width="100px" style="max-width: 460px">
+                <el-form-item label="用户名:">
+                    <el-input disabled v-model="usersInfo.username" />
+                </el-form-item>
+                <el-form-item label="密码:">
+                    <el-input v-model="usersInfo.password" />
+                </el-form-item>
                 <el-form-item label="昵称:">
                     <el-input v-model="usersInfo.nickname" />
                 </el-form-item>
@@ -111,6 +117,19 @@
                 <span class="dialog-footer">
                     <el-button @click="centerDialogVisible = false">取消</el-button>
                     <el-button type="primary" @click="changeInfo">
+                        确认
+                    </el-button>
+                </span>
+            </template>
+        </el-dialog>
+
+        <!-- 消息弹出框 -->
+        <el-dialog v-model="dialogVisible" title="Tips" width="30%" center align-center>
+            <span>是否删除？</span>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="dialogVisible = false">取消</el-button>
+                    <el-button type="primary" @click="handleDelete" dialogVisible>
                         确认
                     </el-button>
                 </span>
@@ -169,49 +188,67 @@ export default {
                 }
             ],
             value: '',
-            centerDialogVisible: false
+            centerDialogVisible: false,
+            username: '',// 用户名
+            index: '', // 用户索引
+            dialogVisible: false,
         }
     },
     methods: {
-        handleDelete(username, index) {
-            if (username === 'admin') {
+        handleDelete() {
+            if (this.username === 'admin') {
                 ElMessage.error('不可删除!!');
                 return;
             }
+            const index = this.index
 
             const userInfo = {
-                'username': username
+                'username': this.username
             }
 
             axios.post('http://localhost:3000/delUsersAccountInfo', userInfo).then(res => {
                 ElMessage.success(res.data.message);
                 this.datalist.splice(index, 1);//同步移除
+                this.dialogVisible = false
             }).catch((err) => {
                 ElMessage.error(err.response.data.error);
             })
         },
-        handleWrite(username) {// 编辑用户资料
+        async handleWrite(username) {// 编辑用户资料
             this.centerDialogVisible = true;
 
-            axios.post('http://localhost:3000/usersInfo', { username }).then(res => { //获取个人信息
+            await axios.post('http://localhost:3000/usersInfo', { username }).then(res => { //获取个人信息
                 if (res.data.data.length) this.usersInfo = res.data.data[0];
+            }).catch((err) => {
+                ElMessage.error(err.response.data.error);
+            })
+
+            axios.get(`http://localhost:3000/getUserAccountInfo?username=${username}`).then(res => { //获取个人信息
+                this.usersInfo.password = res.data.data
                 console.log(this.usersInfo);
             }).catch((err) => {
                 ElMessage.error(err.response.data.error);
             })
 
         },
-        changeInfo() {
+        async changeInfo() {
 
             const userInfo = {
                 nickname: this.usersInfo.nickname,
                 realName: this.usersInfo.realName,
                 gender: this.usersInfo.gender,
                 phoneNumber: this.usersInfo.phoneNumber,
-                username: this.usersInfo.username
+                username: this.usersInfo.username,
+                password: this.usersInfo.password
             }
 
-            axios.post('http://localhost:3000/changeInfo', userInfo).then(res => { //更新信息
+            await axios.post('http://localhost:3000/changeInfo', userInfo).then(res => { //更新信息
+                ElMessage.success(res.data.message)
+            }).catch((err) => {
+                ElMessage.error(err.response.data.error);
+            })
+
+            axios.post('http://localhost:3000/changePassword', {username: this.usersInfo.username, password: this.usersInfo.password}).then(res => { //更新信息
                 ElMessage.success(res.data.message)
             }).catch((err) => {
                 ElMessage.error(err.response.data.error);
@@ -246,6 +283,14 @@ export default {
                     ElMessage.error(err.response.data.error);
                 })
             }
+        },
+        handleDialog(username, index) {
+            if (username === 'admin') {
+                return ElMessage.error('不要瞎搞');
+            }
+            this.dialogVisible = true
+            this.username = username
+            this.index = index
         },
         hanleImg(url) {// 设置代理处理图片
             if (url === null) {// 用户未设置头像时采用默认头像

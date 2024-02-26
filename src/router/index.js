@@ -17,6 +17,10 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
     {
+        path: '/home',
+        component: () => import('../views/Home.vue')
+    },
+    {
         path: '/publishinfo',
         component: () => import('../views/Admin/publishInfo.vue'),
         children: [

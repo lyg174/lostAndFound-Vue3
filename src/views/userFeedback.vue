@@ -28,7 +28,7 @@
                     <el-input v-model="userFeedback.email" />
                 </el-form-item>
                 <el-form-item label="反馈建议:">
-                    <el-input v-model="userFeedback.suggestion" autosize type="textarea" />
+                    <el-input resize="none" v-model="userFeedback.suggestion" :autosize="{maxRows: 10}" type="textarea" />
                 </el-form-item>
             </el-form>
 

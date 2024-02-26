@@ -23,7 +23,7 @@
                             详情
                         </el-button>
                         
-                        <el-button @click="handleDelete(scope.row.suggestion, scope.$index)" type="danger" circle>
+                        <el-button @click="handleDialog(scope.row.suggestion, scope.$index)" type="danger" circle>
                             <el-icon>
                                 <Delete />
                             </el-icon>
@@ -40,6 +40,19 @@
             <div class="textHeight">
                 {{ suggestion }}
             </div>
+        </el-dialog>
+
+        <!-- 消息弹出框 -->
+        <el-dialog v-model="dialogVisible" title="Tips" width="30%" center align-center>
+            <span>是否删除？</span>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="dialogVisible = false">取消</el-button>
+                    <el-button type="primary" @click="handleDelete" dialogVisible>
+                        确认
+                    </el-button>
+                </span>
+            </template>
         </el-dialog>
 
     </div>
@@ -95,14 +108,20 @@ export default {
                 phoneNumber: '',
                 email: '',
                 suggestion: ''
-            }
+            },
+            suggestion: '',// 反馈信息
+            index: '', // 反馈索引
+            dialogVisible: false,
         }
     },
     methods: {
-        handleDelete(suggestion, index) {
+        handleDelete() {
+            const [suggestion, index] = [this.suggestion, this.index]
+
             axios.post('http://localhost:3000/userDeleteFeedbackInfo', { suggestion }).then(res => {
                 ElMessage.success(res.data.message);
                 this.datalist.splice(index, 1);//同步移除
+                this.dialogVisible = false
             }).catch((err) => {
                 ElMessage.error(err.response.data.error);
             })
@@ -111,7 +130,12 @@ export default {
         getSuggestion(suggestion) {
             this.suggestion = suggestion;
             this.dialogTableVisible = true;
-        }
+        },
+        handleDialog(suggestion, index) {
+            this.dialogVisible = true
+            this.suggestion = suggestion
+            this.index = index
+        },
     },
     mounted() {
         axios.get('http://localhost:3000/users_feedback').then(res => {
