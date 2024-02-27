@@ -11,6 +11,17 @@
             <el-table-column prop="lostTime" label="丢失时间" align="center" />
             <el-table-column prop="lostPublishTime" label="失物发布时间" align="center" />
             <el-table-column prop="losersContact" label="失主联系方式" align="center" />
+            <el-table-column prop="status" label="状态" align="center" :filters="[
+                    { text: '已认领', value: 'true' },
+                    { text: '未认领', value: 'false' }
+                ]" :filter-method="filterHandler">
+
+                <template #default="scope">
+                    <el-tag :type="scope.row.status === 'true' ? 'success' : 'danger'"> {{ scope.row.status === 'true' ? '已认领' : '未认领'
+                    }} </el-tag>
+                </template>
+
+            </el-table-column>
             <el-table-column prop="publish_status" label="操作" align="center" :filters="[
                 { text: '已发布', value: 'true' },
                 { text: '未发布', value: 'false' }
@@ -66,6 +77,10 @@
     height: 400px; // 固定高度
     font-size: 20px;
     text-indent: 2em; // 首行缩进
+}
+.lostList {
+    flex: 1; //填充剩余部分
+    background-color: #ecf5ff;
 }
 </style>
 

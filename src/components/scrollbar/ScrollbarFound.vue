@@ -1,5 +1,5 @@
 <template>
-    <div class="lostList">
+    <div class="foundList">
         <el-table :data="dataListCopy" style="width: 100%" table-layout="fixed" max-height="680">
             <el-table-column prop="foundImageUrl" label="招领物图片" align="center">
                 <template #default="scope">
@@ -35,78 +35,9 @@
     text-indent: 2em; // 首行缩进
 }
 
-.lostList {
+.foundList {
     flex: 1; //填充剩余部分
     background-color: #ecf5ff;
-}
-
-.scroll {
-    // 滚动组件
-    max-height: 680.4px;
-    position: relative;
-}
-
-.title {
-    // 信息标题
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 550;
-    background: var(--el-color-primary-light-9);
-    color: var(--el-color-primary);
-    padding: 10px;
-    padding-bottom: 0;
-    position: sticky; //设置粘性定位
-    top: 0;
-
-    div {
-        flex: 1;
-        text-align: center;
-        border-bottom: 1px solid black;
-        overflow: hidden;
-        /* 隐藏溢出内容 */
-        white-space: nowrap;
-        /* 不换行，防止文本溢出 */
-        text-overflow: ellipsis;
-        /* 当文本溢出时显示省略号 */
-    }
-
-    div:not(:last-child) {
-        border-right: 1px solid black;
-    }
-}
-
-.scrollbar-demo-item {
-    // 后端获取数据并展示的栏位
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    // height: 50px;
-    padding: 10px;
-    text-align: center;
-    border-radius: 4px;
-    border-bottom: 1px solid black;
-    background: var(--el-color-primary-light-9);
-    color: var(--el-color-primary);
-
-
-    .lostInfo {
-        flex: 1;
-        height: 200px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        // line-height: 200px;
-        img {
-            width: 90%;
-            height: 100%;
-        }
-    }
-
-    div:not(:last-child) {
-        border-right: 1px solid black;
-    }
 }
 </style>
 

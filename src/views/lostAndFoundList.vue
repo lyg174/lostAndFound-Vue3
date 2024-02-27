@@ -166,6 +166,7 @@ export default {
             console.log(this.text);
             if (this.text !== '') {
                 this.dataListCopy = this.dataList.filter(item => {
+                    if (item.status === 'true' || item.publish_status === 'false') return // 只允许搜索已发布且未认领的数据
                     if (item.lostName) return item.lostName.includes(this.text);// 处理失物数据
                     if (item.foundName) return item.foundName.includes(this.text);// 处理招领物数据
                 });
@@ -176,7 +177,7 @@ export default {
         },
         copyArray(list) {// 接受子组件传来的数据
             this.dataList = list;
-            this.dataListCopy = this.dataList.slice().filter(item => item.publish_status === 'true');// 复制
+            this.dataListCopy = this.dataList.slice().filter(item => item.publish_status === 'true' && item.status === 'false');// 复制(被认领或者寻回的不展示)
         },
         handleMsgAuto() {
             const controlClick = sessionStorage.getItem('controlClick');

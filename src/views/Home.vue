@@ -2,8 +2,8 @@
     <div class="home">
 
         <div
-            style="margin:auto; height: 5%; width: 95%; margin: 1px auto; text-align: center; background-color: #21a7a6; border: none;">
-            <h2>校园失物招领系统</h2>
+            style="margin:auto; width: 95%; margin: 1px auto; text-align: center; background-color: #21a7a6; border: none;">
+            <h1 style="color: #fff;">校园失物招领系统</h1>
         </div>
 
         <div class="box-card">

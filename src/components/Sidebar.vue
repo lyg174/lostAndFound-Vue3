@@ -22,7 +22,7 @@
 
                 <el-menu-item index="2" @click="handleRouter('/found')">
                     <el-icon><Promotion /></el-icon>
-                    <span>发布拾取失物</span>
+                    <span>发布招领物</span>
                 </el-menu-item>
 
                 <el-menu-item index="3" @click="handleRouter('/lost')">
@@ -62,7 +62,7 @@
 
 <style lang="scss" scoped>
 .container {
-    width: 15%;
+    width: 14%;
     height: 100vh;
     background-color: #c6b0a7;
 }

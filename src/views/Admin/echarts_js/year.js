@@ -33,7 +33,7 @@ async function year() {
 
     option = {
         title: {
-            text: '近一年'
+            text: '今年'
         },
         tooltip: {
             trigger: 'axis',
@@ -74,7 +74,7 @@ async function year() {
                 emphasis: {
                     focus: 'series'
                 },
-                data: [120, 132, 101, 134, 90, 230, 210, 230, 120, 132, 101, 134]
+                data: data_01
             },
             {
                 name: '已发布的招领物',
@@ -84,7 +84,7 @@ async function year() {
                 emphasis: {
                     focus: 'series'
                 },
-                data: [550, 532, 501, 534, 590, 530, 510, 530, 550, 532, 501, 534]
+                data: data_02
             }
         ]
     };

@@ -13,20 +13,20 @@
                 <el-tab-pane label="发布统计">
 
                     <div style="display: flex; height: 100%;">
-                        <div style="flex: 5; padding: 0 10px;">
+                        <div style="flex: 1; padding: 0 10px;">
                             <div id="year_line" style="width: 100%; height: 100%;"></div>
                         </div>
 
-                        <div style="flex: 2; padding: 0 10px;">
+                        <!-- <div style="flex: 2; padding: 0 10px;">
                             <div id="year_pie" style="width: 100%; height: 100%;"></div>
-                        </div>
+                        </div> -->
                     </div>
 
 
                 </el-tab-pane>
-                <el-tab-pane label="用户统计">
+                <!-- <el-tab-pane label="用户统计">
                     <div style="background-color: red; width: 100%;">bbb</div>
-                </el-tab-pane>
+                </el-tab-pane> -->
                 <el-tab-pane label="反馈统计">
                     <div style="background-color: red; width: 100%;">ccc</div>
                 </el-tab-pane>

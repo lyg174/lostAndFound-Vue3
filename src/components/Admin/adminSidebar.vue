@@ -55,7 +55,7 @@
 
 <style lang="scss" scoped>
 .container {
-    width: 15%;
+    width: 14%;
     height: 100vh;
     background-color: #c6b0a7;
 }

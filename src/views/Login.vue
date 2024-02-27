@@ -116,12 +116,12 @@ export default {
         } else sessionStorage.setItem('avatar', datalist.avatar);// 头像地址
 
         if (userMsg.username == 'admin') {// 管理员账号
-          this.$router.push('/publishinfo/lostinfo');
+          this.$router.push('/home');
           this.$emit('adminLoggedIn'); // 触发@adminLoggedIn改变adminSidebar显示状态
           console.log(555);
         }
         else {
-          this.$router.push('/list/lostlist');// 普通用户账号
+          this.$router.push('/home');// 普通用户账号
           this.$emit('loggedIn'); // 触发@loggedIn改变Sidebar显示状态
         };
 

@@ -68,6 +68,15 @@
                     </template>
 
                 </el-table-column>
+                <el-table-column prop="status" label="是否认领" align="center">
+
+                    <template #default="scope">
+                        <el-switch @change="handleChange(scope.row.status, scope.row.id)" v-model="scope.row.status"
+                            class="ml-2" style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
+                            active-value="true" inactive-value="false" />
+                    </template>
+
+                </el-table-column>
             </el-table>
 
         </el-card>
@@ -116,7 +125,8 @@ export default {
                 lostPublishTime: '',
                 descripText: '',
                 myContact: ''
-            }
+            },
+            value: true,
         }
     },
     methods: {
@@ -161,6 +171,14 @@ export default {
             this.$refs.upload.userData = publishInfo;//将处理后的信息提交给子组件
 
             this.$refs.upload.submitUpload();//触发子组件发送方法
+        },
+        handleChange(status, id) {
+            console.log(status, id);
+            axios.post('http://localhost:3000/userPublishLostChangeStatus', { status, id }).then(res => {
+                ElMessage({ message: res.data.message, type: 'success' })
+            }).catch(err => {
+                console.log(err)
+            })
         }
     },
     mounted() {

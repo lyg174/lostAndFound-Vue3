@@ -34,6 +34,10 @@
     font-size: 20px;
     text-indent: 2em; // 首行缩进
 }
+.lostList {
+    flex: 1; //填充剩余部分
+    background-color: #ecf5ff;
+}
 </style>
 
 <script>
